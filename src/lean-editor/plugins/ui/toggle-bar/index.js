@@ -6,7 +6,11 @@ const defaultConfig = {
   commandTypes: ['toggleCommand'],
 }
 
-export const TogglebarPlugin = (config = defaultConfig) => {
+export const TogglebarPlugin = (configOverrides = {}) => {
+  const config = {
+    ...defaultConfig,
+    ...configOverrides,
+  }
   const { commandTypes } = config
 
   return {

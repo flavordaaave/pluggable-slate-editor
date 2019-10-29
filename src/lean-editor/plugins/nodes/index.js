@@ -1,3 +1,5 @@
 export { CodeNode } from './code'
-export { InfoBoxBlock } from './info-box'
+export { ContainerNode } from './container'
+export { HeadlineNode } from './headline'
+export { InfoBoxNode } from './info-box'
 export { ParagraphNode } from './paragraph'

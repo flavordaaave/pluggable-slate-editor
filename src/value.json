@@ -1,0 +1,68 @@
+{
+  "document": {
+    "nodes": [
+      {
+        "object": "block",
+        "type": "headline",
+        "nodes": [
+          {
+            "object": "text",
+            "text": "Welcome! This is the headline."
+          }
+        ]
+      },
+      {
+        "object": "block",
+        "type": "body",
+        "nodes": [
+          {
+            "object": "block",
+            "type": "paragraph",
+            "nodes": [
+              {
+                "object": "text",
+                "text": "A line of text in a paragraph block."
+              }
+            ]
+          },
+          {
+            "object": "block",
+            "type": "infoBox",
+            "nodes": [
+              {
+                "object": "block",
+                "type": "infoBoxParagraph",
+                "nodes": [
+                  {
+                    "object": "text",
+                    "text": "A line of text in a infoBoxParagraph block."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "object": "block",
+            "type": "code",
+            "nodes": [
+              {
+                "object": "text",
+                "text": "A line of text in a code block."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "object": "block",
+        "type": "headline",
+        "nodes": [
+          {
+            "object": "text",
+            "text": "Goodbye from the headline behind the body."
+          }
+        ]
+      }
+    ]
+  }
+}

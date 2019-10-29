@@ -1,12 +1,12 @@
 import React from 'react'
 
-import { CodeComponent } from './component'
+import { HeadlineComponent } from './component'
 
 const defaultConfig = {
-  type: 'code',
+  type: 'headline',
 }
 
-export const CodeNode = (configOverrides = {}) => {
+export const HeadlineNode = (configOverrides = {}) => {
   const config = {
     ...defaultConfig,
     ...configOverrides,
@@ -17,7 +17,7 @@ export const CodeNode = (configOverrides = {}) => {
     renderBlock: (props, editor, next) => {
       switch (props.node.type) {
         case type:
-          return <CodeComponent {...props} />
+          return <HeadlineComponent {...props} />
         default:
           return next()
       }

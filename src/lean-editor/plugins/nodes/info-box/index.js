@@ -5,28 +5,30 @@ import { InfoBoxComponent } from './component'
 
 const defaultConfig = {
   icon: InfoButton,
-  schemaType: 'infoBox',
+  type: 'infoBox',
   toggleCommand: 'toggleInfoBox',
 }
 
-export const InfoBoxBlock = (config = defaultConfig) => {
-  const { schemaType, toggleCommand } = config
+export const InfoBoxNode = (configOverrides = {}) => {
+  const config = {
+    ...defaultConfig,
+    ...configOverrides,
+  }
+  const { type, toggleCommand } = config
 
   return {
     config,
     commands: {
       [toggleCommand]: editor => {
-        const isActive = editor.value.blocks.some(
-          block => block.type === schemaType
-        )
+        const isActive = editor.value.blocks.some(block => block.type === type)
 
         // Otherwise, set the currently selected blocks type to "type".
-        editor.setBlocks(isActive ? 'paragraph' : schemaType)
+        editor.setBlocks(isActive ? 'paragraph' : type)
       },
     },
     renderBlock(props, editor, next) {
       switch (props.node.type) {
-        case schemaType:
+        case type:
           return <InfoBoxComponent {...props} />
         default:
           return next()

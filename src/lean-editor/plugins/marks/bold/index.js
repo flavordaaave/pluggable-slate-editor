@@ -7,7 +7,11 @@ const defaultConfig = {
   toggleCommand: 'toggleBold',
 }
 
-export const BoldPlugin = (config = defaultConfig) => {
+export const BoldPlugin = (configOverrides = {}) => {
+  const config = {
+    ...defaultConfig,
+    ...configOverrides,
+  }
   const { schemaType, toggleCommand } = config
 
   return {

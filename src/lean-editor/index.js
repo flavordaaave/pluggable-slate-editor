@@ -7,7 +7,7 @@ export const LeanEditor = ({ className, onChange, schema, value }) => {
       className={className}
       onChange={handleOnChange}
       plugins={buildPlugins(schema)}
-      schema={buildSchema(schema)}
+      schema={buildDocumentSchema(schema)}
       value={value}
     />
   )
@@ -17,35 +17,37 @@ export const LeanEditor = ({ className, onChange, schema, value }) => {
   }
 }
 
-function buildSchema(schema) {
-  const documentNodes = schema.map(node => ({
-    match: { type: node.type },
-  }))
-
-  const documentBlocks = {}
+// We only need to build the document a.k.a root schema with it's nodes
+// All blocks are added by the plugins itself
+function buildDocumentSchema(schema) {
+  const documentNodes = []
 
   for (let node of schema) {
-    documentBlocks[node.type] = {
-      nodes: [
-        {
-          match: node.nodes.map(block => ({
-            type: block.config.type,
-          })),
-        },
-      ],
+    const { type } = node.config
+    if (type) {
+      // We add a seperate object with a single `match.type` object
+      // so the user explicitly defines the exact order and accurance of each node in the root document
+      documentNodes.push({
+        match: { type },
+        max: 1, // Prevents multiple occurences in a row
+        min: 1,
+      })
     }
   }
 
   const constructedSchema = {
     document: {
       nodes: documentNodes,
-      normalize(editor, { code, index, node, child, rule }) {
-        console.log('child', child)
-        console.log('code', code)
-        console.log('rule', rule)
+      normalize(editor, error) {
+        const { code, index, node, child, rule } = error
+        console.log('Document: child', child)
+        console.log('Document: code', code)
+        console.log('Document: rule', rule)
+        console.log('Document: node', node)
+        console.log('Document: index', index)
       },
     },
-    blocks: documentBlocks,
+    blocks: {},
     inlines: [],
     rules: [],
   }
@@ -55,9 +57,14 @@ function buildSchema(schema) {
 function buildPlugins(schema) {
   const plugins = []
 
+  // Add all root-level plugins
   for (let node of schema) {
-    for (let block of node.nodes) {
-      plugins.push(block)
+    plugins.push(node)
+
+    // Check if we have nested plugins
+    const { nodes = [] } = node.config
+    for (let node of nodes) {
+      plugins.push(node)
     }
   }
 

@@ -1,67 +1,52 @@
-import Container from '@material-ui/core/Container'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import { makeStyles } from '@material-ui/core/styles'
 import React, { useState } from 'react'
 import { Value } from 'slate'
 
 import { LeanEditor } from './lean-editor'
-import { ParagraphNode, CodeNode } from './lean-editor/plugins/nodes'
+import {
+  CodeNode,
+  ContainerNode,
+  HeadlineNode,
+  ParagraphNode,
+} from './lean-editor/plugins/nodes'
+import initialValue from './value'
+import { InfoBox } from './components/InfoBox'
 
-const initialValue = Value.fromJSON({
-  document: {
-    nodes: [
-      {
-        object: 'block',
-        type: 'articleBody',
-        nodes: [
-          {
-            object: 'block',
-            type: 'paragraph',
-            nodes: [
-              {
-                object: 'text',
-                text: 'A line of text in a paragraph block.',
-              },
-            ],
-          },
-          {
-            object: 'block',
-            type: 'code',
-            nodes: [
-              {
-                object: 'text',
-                text: 'A line of text in a code block.',
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-})
-
+// NOTE: The order matters!
 const schema = [
-  {
-    type: 'articleBody',
-    nodes: [ParagraphNode(), CodeNode()],
-  },
+  HeadlineNode(),
+  ContainerNode({
+    nodes: [
+      ParagraphNode(),
+      CodeNode(),
+      ContainerNode({
+        type: 'infoBox',
+        Component: InfoBox,
+        nodes: [
+          ParagraphNode({
+            type: 'infoBoxParagraph',
+          }),
+        ],
+      }),
+    ],
+  }),
+  HeadlineNode(),
 ]
 
 export const App = () => {
-  const [editorValue, setEditorValue] = useState(initialValue)
+  const [editorValue, setEditorValue] = useState(Value.fromJSON(initialValue))
 
   const classes = useStyles()
   return (
     <React.Fragment>
       <CssBaseline />
-      <Container className={classes.container} maxWidth="md">
-        <LeanEditor
-          className={classes.editor}
-          onChange={setEditorValue}
-          schema={schema}
-          value={editorValue}
-        />
-      </Container>
+      <LeanEditor
+        className={classes.editor}
+        onChange={setEditorValue}
+        schema={schema}
+        value={editorValue}
+      />
     </React.Fragment>
   )
 }
@@ -73,10 +58,6 @@ const useStyles = makeStyles(theme => ({
     },
   },
   editor: {
-    padding: theme.spacing(2),
-  },
-  container: {
-    backgroundColor: '#ffffff',
     padding: theme.spacing(2),
   },
 }))

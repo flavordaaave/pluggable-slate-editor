@@ -6,7 +6,11 @@ const defaultConfig = {
   type: 'paragraph',
 }
 
-export const ParagraphNode = (config = defaultConfig) => {
+export const ParagraphNode = (configOverrides = {}) => {
+  const config = {
+    ...defaultConfig,
+    ...configOverrides,
+  }
   const { type } = config
   return {
     config,

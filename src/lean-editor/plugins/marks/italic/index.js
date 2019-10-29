@@ -7,7 +7,11 @@ const defaultConfig = {
   toggleCommand: 'toggleItalic',
 }
 
-export const ItalicPlugin = (config = defaultConfig) => {
+export const ItalicPlugin = (configOverrides = {}) => {
+  const config = {
+    ...defaultConfig,
+    ...configOverrides,
+  }
   const { schemaType, toggleCommand } = config
 
   return {
