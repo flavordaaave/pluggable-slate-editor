@@ -4,34 +4,38 @@ import React, { useState } from 'react'
 import { Value } from 'slate'
 
 import { LeanEditor } from './lean-editor'
-import {
-  CodeNode,
-  ContainerNode,
-  HeadlineNode,
-  ParagraphNode,
-} from './lean-editor/plugins/nodes'
+import { ContainerNode, TextNode } from './lean-editor/plugins/nodes'
 import initialValue from './value'
-import { InfoBox } from './components/InfoBox'
+import { Code, Headline, InfoBox } from './components'
 
 // NOTE: The order matters!
 const schema = [
-  HeadlineNode(),
+  TextNode({
+    Component: Headline,
+    type: 'headline',
+  }),
   ContainerNode({
     nodes: [
-      ParagraphNode(),
-      CodeNode(),
+      TextNode(),
+      TextNode({
+        Component: Code,
+        type: 'code',
+      }),
       ContainerNode({
         type: 'infoBox',
         Component: InfoBox,
         nodes: [
-          ParagraphNode({
+          TextNode({
             type: 'infoBoxParagraph',
           }),
         ],
       }),
     ],
   }),
-  HeadlineNode(),
+  TextNode({
+    Component: Headline,
+    type: 'headline',
+  }),
 ]
 
 export const App = () => {
