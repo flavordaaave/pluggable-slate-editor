@@ -1,26 +1,82 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Container from '@material-ui/core/Container'
+import CssBaseline from '@material-ui/core/CssBaseline'
+import { makeStyles } from '@material-ui/core/styles'
+import React, { useState } from 'react'
+import { Value } from 'slate'
 
-function App() {
+import { LeanEditor } from './lean-editor'
+import { ParagraphNode, CodeNode } from './lean-editor/plugins/nodes'
+
+const initialValue = Value.fromJSON({
+  document: {
+    nodes: [
+      {
+        object: 'block',
+        type: 'articleBody',
+        nodes: [
+          {
+            object: 'block',
+            type: 'paragraph',
+            nodes: [
+              {
+                object: 'text',
+                text: 'A line of text in a paragraph block.',
+              },
+            ],
+          },
+          {
+            object: 'block',
+            type: 'code',
+            nodes: [
+              {
+                object: 'text',
+                text: 'A line of text in a code block.',
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+})
+
+const schema = [
+  {
+    type: 'articleBody',
+    nodes: [ParagraphNode(), CodeNode()],
+  },
+]
+
+export const App = () => {
+  const [editorValue, setEditorValue] = useState(initialValue)
+
+  const classes = useStyles()
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <React.Fragment>
+      <CssBaseline />
+      <Container className={classes.container} maxWidth="md">
+        <LeanEditor
+          className={classes.editor}
+          onChange={setEditorValue}
+          schema={schema}
+          value={editorValue}
+        />
+      </Container>
+    </React.Fragment>
+  )
 }
 
-export default App;
+const useStyles = makeStyles(theme => ({
+  '@global': {
+    body: {
+      backgroundColor: '#efefef',
+    },
+  },
+  editor: {
+    padding: theme.spacing(2),
+  },
+  container: {
+    backgroundColor: '#ffffff',
+    padding: theme.spacing(2),
+  },
+}))
