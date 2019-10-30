@@ -6,6 +6,6 @@
   - 1 Plugin for Block that is toggled: `infoBox`
   - 1 Plugin for Block that is added/removed: `image`
   - 1 Plugin that adds keynoard shortcut: `soft-linebreak`
-- [ ] Dynamically load plugins based on a config
-- [ ] Allow configuring plugin relations a.k.a plugins within other plugins (e.g. `link` within `infoBox`)
+- [x] Dynamically load plugins based on a config
+- [x] Allow configuring plugin relations a.k.a plugins within other plugins (e.g. `bold` within `infoBox`)
 - [ ] Dynamically build Navigation elements: `Mark` vs. `Inline` vs. `Block`
