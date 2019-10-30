@@ -37,11 +37,9 @@ export const ContainerNode = (configOverrides = {}) => {
                 },
               ]) ||
             [],
-          marks: [],
-          inlines: [],
-          rules: [],
           normalize(editor, error) {
             const { code, index, node, child, rule } = error
+            console.log('ContainerNode: node', node)
             console.log('ContainerNode: child', child)
             console.log('ContainerNode: code', code)
             console.log('ContainerNode: rule', rule)

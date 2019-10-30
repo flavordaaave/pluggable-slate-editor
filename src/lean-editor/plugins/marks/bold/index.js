@@ -3,27 +3,27 @@ import BoldIcon from '@material-ui/icons/FormatBold'
 
 const defaultConfig = {
   icon: BoldIcon,
-  schemaType: 'bold',
+  type: 'bold',
   toggleCommand: 'toggleBold',
 }
 
-export const BoldPlugin = (configOverrides = {}) => {
+export const BoldMark = (configOverrides = {}) => {
   const config = {
     ...defaultConfig,
     ...configOverrides,
   }
-  const { schemaType, toggleCommand } = config
+  const { type, toggleCommand } = config
 
   return {
     config,
     commands: {
       [toggleCommand]: editor => {
-        editor.toggleMark(schemaType)
+        editor.toggleMark(type)
       },
     },
     renderMark(props, editor, next) {
       switch (props.mark.type) {
-        case schemaType:
+        case type:
           return <strong>{props.children}</strong>
         default:
           return next()

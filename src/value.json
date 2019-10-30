@@ -21,7 +21,16 @@
             "nodes": [
               {
                 "object": "text",
-                "text": "A line of text in a paragraph block."
+                "text": "A line of text "
+              },
+              {
+                "object": "text",
+                "text": "with bold",
+                "marks": [{ "type": "bold" }]
+              },
+              {
+                "object": "text",
+                "text": " in a paragraph block."
               }
             ]
           },
@@ -35,7 +44,16 @@
                 "nodes": [
                   {
                     "object": "text",
-                    "text": "A line of text in a infoBoxParagraph block."
+                    "text": "A line of text "
+                  },
+                  {
+                    "object": "text",
+                    "text": "with bold",
+                    "marks": [{ "type": "bold" }]
+                  },
+                  {
+                    "object": "text",
+                    "text": " in an infoBoxParagraph block."
                   }
                 ]
               }

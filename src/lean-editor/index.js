@@ -48,25 +48,27 @@ function buildDocumentSchema(schema) {
       },
     },
     blocks: {},
-    inlines: [],
-    rules: [],
+    // NOTE: We won't add `marks`, `inline` & `rules` here
+    // since the marks within nested plugins (e.g. text) would not work w/o adding all marks on the top levels as well
   }
   return constructedSchema
 }
 
+// TODO: Prevent re-rendering of the generation process
+// TODO: Filter out duplicates
 function buildPlugins(schema) {
-  const plugins = []
+  return schema.reduce((plugins, node) => {
+    return [...plugins, node, ...extractNestedPlugins(node)]
+  }, [])
+}
 
-  // Add all root-level plugins
-  for (let node of schema) {
-    plugins.push(node)
+function extractNestedPlugins(plugin) {
+  const nodes = plugin.config.nodes || []
+  const marks = plugin.config.marks || []
 
-    // Check if we have nested plugins
-    const { nodes = [] } = node.config
-    for (let node of nodes) {
-      plugins.push(node)
-    }
-  }
+  const nestedPlugins = nodes.reduce((array, node) => {
+    return [...array, ...extractNestedPlugins(node)]
+  }, [])
 
-  return plugins
+  return [...nodes, ...marks, ...nestedPlugins]
 }

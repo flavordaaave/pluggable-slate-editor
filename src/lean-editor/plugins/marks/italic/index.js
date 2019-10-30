@@ -3,27 +3,27 @@ import ItalicIcon from '@material-ui/icons/FormatItalic'
 
 const defaultConfig = {
   icon: ItalicIcon,
-  schemaType: 'italic',
+  type: 'italic',
   toggleCommand: 'toggleItalic',
 }
 
-export const ItalicPlugin = (configOverrides = {}) => {
+export const ItalicMark = (configOverrides = {}) => {
   const config = {
     ...defaultConfig,
     ...configOverrides,
   }
-  const { schemaType, toggleCommand } = config
+  const { type, toggleCommand } = config
 
   return {
     config,
     commands: {
       [toggleCommand]: editor => {
-        editor.toggleMark(schemaType)
+        editor.toggleMark(type)
       },
     },
     renderMark(props, editor, next) {
       switch (props.mark.type) {
-        case schemaType:
+        case type:
           return <em>{props.children}</em>
         default:
           return next()

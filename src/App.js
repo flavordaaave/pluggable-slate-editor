@@ -3,10 +3,11 @@ import { makeStyles } from '@material-ui/core/styles'
 import React, { useState } from 'react'
 import { Value } from 'slate'
 
+import { Code, Headline, InfoBox } from './components'
 import { LeanEditor } from './lean-editor'
 import { ContainerNode, TextNode } from './lean-editor/plugins/nodes'
+import { BoldMark } from './lean-editor/plugins/marks'
 import initialValue from './value'
-import { Code, Headline, InfoBox } from './components'
 
 // NOTE: The order matters!
 const schema = [
@@ -16,7 +17,9 @@ const schema = [
   }),
   ContainerNode({
     nodes: [
-      TextNode(),
+      TextNode({
+        marks: [BoldMark()],
+      }),
       TextNode({
         Component: Code,
         type: 'code',

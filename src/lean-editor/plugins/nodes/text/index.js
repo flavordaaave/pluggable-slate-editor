@@ -4,6 +4,7 @@ import { ParagraphComponent } from './component'
 
 const defaultConfig = {
   Component: ParagraphComponent,
+  marks: [],
   type: 'paragraph',
 }
 
@@ -12,7 +13,7 @@ export const TextNode = (configOverrides = {}) => {
     ...defaultConfig,
     ...configOverrides,
   }
-  const { Component, type } = config
+  const { Component, marks, type } = config
   return {
     config,
     renderBlock: (props, editor, next) => {
@@ -24,16 +25,25 @@ export const TextNode = (configOverrides = {}) => {
       }
     },
     schema: {
-      document: {
-        blocks: {
-          [type]: {
-            nodes: [
-              {
-                match: { object: 'text' },
-              },
-            ],
-            marks: [],
-          },
+      blocks: {
+        [type]: {
+          nodes: [
+            {
+              match: { object: 'text' },
+            },
+          ],
+          marks: marks.reduce((array, mark) => {
+            const { config } = mark
+            if (config.type) {
+              return [
+                ...array,
+                {
+                  type: config.type,
+                },
+              ]
+            }
+            return array
+          }, []),
         },
       },
     },
