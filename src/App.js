@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import React, { useState } from 'react'
 import { Value } from 'slate'
 
-import { Code, Headline, InfoBox } from './components'
+import { Caption, Code, Headline, InfoBox } from './components'
 import { LeanEditor } from './lean-editor'
 import { ContainerNode, TextNode } from './lean-editor/plugins/nodes'
 import { BoldMark } from './lean-editor/plugins/marks'
@@ -38,6 +38,10 @@ const schema = [
   TextNode({
     Component: Headline,
     type: 'headline',
+  }),
+  TextNode({
+    type: 'outside',
+    Component: Caption,
   }),
 ]
 

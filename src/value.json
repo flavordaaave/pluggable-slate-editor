@@ -80,6 +80,16 @@
             "text": "Goodbye from the headline behind the body."
           }
         ]
+      },
+      {
+        "object": "block",
+        "type": "outside",
+        "nodes": [
+          {
+            "object": "text",
+            "text": "A line of text outside the main body"
+          }
+        ]
       }
     ]
   }
