@@ -1,7 +1,11 @@
 import React from 'react'
 
 import { ActionBarComponent } from './component'
-import { getFirstCurrentTargetBlock, getParentForBlock } from '../../_utils'
+import {
+  getFirstCurrentTargetBlock,
+  getParentForBlock,
+  isTextBlock,
+} from '../../_utils'
 
 /**
  * TODO: Allow passing in an array of specific command names to be displayed
@@ -70,6 +74,14 @@ function getIsActive(editor, plugin, schemaType) {
     case 'inline':
     case 'block': {
       const currentBlock = getFirstCurrentTargetBlock(editor)
+      const parentBlock = getParentForBlock(editor, currentBlock)
+
+      // Container nodes can not be in selection.
+      // Instead one of it's nodes will be the `currentBlock`.
+      // So we will look at the parent of the `currentBlock`
+      // to see wether the selection is within a container
+      if ((parentBlock && parentBlock.type) === plugin.config.type) return true
+
       return (
         currentBlock &&
         currentBlock.type &&
@@ -99,6 +111,13 @@ function getIsVisible(editor, allPlugins, plugin, commandTypes) {
     case 'inline':
     case 'block': {
       const parentBlock = getParentForBlock(editor, currentBlock)
+
+      // Container nodes can not be in selection.
+      // Instead one of it's nodes will be the `currentBlock`.
+      // So we will look at the parent of the `currentBlock`
+      // to see wether the selection is within a container
+      if ((parentBlock && parentBlock.type) === plugin.config.type) return true
+
       if (!parentBlock) return false
       const schema = getSchemaForBlock(allPlugins, parentBlock)
 
