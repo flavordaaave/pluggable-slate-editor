@@ -5,6 +5,7 @@ import { getFirstCurrentTargetBlock, getParentForBlock } from '../../_utils'
 
 /**
  * TODO: Allow passing in an array of specific command names to be displayed
+ * TODO: Handle selection over multiple blocks
  */
 
 const defaultConfig = {
