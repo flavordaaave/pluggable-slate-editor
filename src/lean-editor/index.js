@@ -1,12 +1,12 @@
 import React from 'react'
 import { Editor } from 'slate-react'
 
-export const LeanEditor = ({ className, onChange, schema, value }) => {
+export const LeanEditor = ({ className, onChange, plugins, schema, value }) => {
   return (
     <Editor
       className={className}
       onChange={handleOnChange}
-      plugins={buildPlugins(schema)}
+      plugins={[...plugins, ...buildSchemaPlugins(schema)]}
       schema={buildDocumentSchema(schema)}
       value={value}
     />
@@ -56,7 +56,7 @@ function buildDocumentSchema(schema) {
 
 // TODO: Prevent re-rendering of the generation process
 // TODO: Filter out duplicates
-function buildPlugins(schema) {
+function buildSchemaPlugins(schema) {
   return schema.reduce((plugins, node) => {
     return [...plugins, node, ...extractNestedPlugins(node)]
   }, [])

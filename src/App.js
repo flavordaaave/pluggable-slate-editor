@@ -5,8 +5,9 @@ import { Value } from 'slate'
 
 import { Caption, Code, Headline, InfoBox } from './components'
 import { LeanEditor } from './lean-editor'
-import { ContainerNode, TextNode } from './lean-editor/plugins/nodes'
-import { BoldMark } from './lean-editor/plugins/marks'
+import { ContainerNode, TextNode } from './lean-editor/schema/nodes'
+import { BoldMark, ItalicMark } from './lean-editor/schema/marks'
+import { TogglebarPlugin } from './lean-editor/plugins'
 import initialValue from './value'
 
 // NOTE: The order matters!
@@ -18,7 +19,7 @@ const schema = [
   ContainerNode({
     nodes: [
       TextNode({
-        marks: [BoldMark()],
+        marks: [BoldMark(), ItalicMark()],
       }),
       TextNode({
         Component: Code,
@@ -30,6 +31,7 @@ const schema = [
         nodes: [
           TextNode({
             type: 'infoBoxParagraph',
+            marks: [ItalicMark()],
           }),
         ],
       }),
@@ -55,6 +57,7 @@ export const App = () => {
       <LeanEditor
         className={classes.editor}
         onChange={setEditorValue}
+        plugins={[TogglebarPlugin()]}
         schema={schema}
         value={editorValue}
       />

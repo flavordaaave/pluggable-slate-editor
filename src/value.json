@@ -48,8 +48,8 @@
                   },
                   {
                     "object": "text",
-                    "text": "with bold",
-                    "marks": [{ "type": "bold" }]
+                    "text": "with italic",
+                    "marks": [{ "type": "italic" }]
                   },
                   {
                     "object": "text",
