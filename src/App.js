@@ -1,6 +1,9 @@
-import CssBaseline from '@material-ui/core/CssBaseline'
-import { makeStyles } from '@material-ui/core/styles'
 import React, { useState } from 'react'
+
+import Container from '@material-ui/core/Container'
+import { makeStyles } from '@material-ui/core/styles'
+import CssBaseline from '@material-ui/core/CssBaseline'
+import Divider from '@material-ui/core/Divider'
 import { Value } from 'slate'
 
 import { Caption, Code, Headline, InfoBox } from './components'
@@ -15,6 +18,7 @@ const schema = [
   TextNode({
     Component: Headline,
     type: 'headline',
+    marks: [ItalicMark()],
   }),
   ContainerNode({
     nodes: [
@@ -61,6 +65,11 @@ export const App = () => {
         schema={schema}
         value={editorValue}
       />
+
+      <Divider />
+      <Container maxWidth="xl">
+        <pre>{JSON.stringify(editorValue && editorValue.toJS(), null, 2)}</pre>
+      </Container>
     </React.Fragment>
   )
 }

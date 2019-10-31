@@ -1,13 +1,27 @@
 import React from 'react'
 import { Editor } from 'slate-react'
 
+let documentSchema = null
+let generatedPlugins = null
+
 export const LeanEditor = ({ className, onChange, plugins, schema, value }) => {
+  // We only want to generate the schema and plugins once since those operations are pretty expensive
+  if (!documentSchema) {
+    documentSchema = buildDocumentSchema(schema)
+  }
+  if (!generatedPlugins) {
+    generatedPlugins = removeDuplicatedPlugins([
+      ...plugins,
+      ...buildSchemaPlugins(schema),
+    ])
+  }
+
   return (
     <Editor
       className={className}
       onChange={handleOnChange}
-      plugins={[...plugins, ...buildSchemaPlugins(schema)]}
-      schema={buildDocumentSchema(schema)}
+      plugins={generatedPlugins}
+      schema={documentSchema}
       value={value}
     />
   )
@@ -54,8 +68,6 @@ function buildDocumentSchema(schema) {
   return constructedSchema
 }
 
-// TODO: Prevent re-rendering of the generation process
-// TODO: Filter out duplicates
 function buildSchemaPlugins(schema) {
   return schema.reduce((plugins, node) => {
     return [...plugins, node, ...extractNestedPlugins(node)]
@@ -71,4 +83,20 @@ function extractNestedPlugins(plugin) {
   }, [])
 
   return [...nodes, ...marks, ...nestedPlugins]
+}
+
+function removeDuplicatedPlugins(allPlugins) {
+  const filteredPlugins = []
+
+  for (let plugin of allPlugins) {
+    if (
+      !filteredPlugins
+        .map(o => JSON.stringify(o))
+        .includes(JSON.stringify(plugin))
+    ) {
+      filteredPlugins.push(plugin)
+    }
+  }
+
+  return filteredPlugins
 }
