@@ -1,11 +1,7 @@
 import React from 'react'
 
 import { ActionBarComponent } from './component'
-import {
-  getFirstCurrentTargetBlock,
-  getParentForBlock,
-  isTextBlock,
-} from '../../_utils'
+import { getFirstCurrentTargetBlock, getParentForBlock } from '../../_utils'
 
 /**
  * TODO: Allow passing in an array of specific command names to be displayed
