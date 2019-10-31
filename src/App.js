@@ -10,6 +10,7 @@ import { Value } from 'slate'
 
 import { AddBar, Caption, Code, Headline, InfoBox } from './components'
 import { LeanEditor } from './lean-editor'
+import { LinkInline } from './lean-editor/schema/inlines'
 import { ContainerNode, TextNode } from './lean-editor/schema/nodes'
 import { BoldMark, ItalicMark } from './lean-editor/schema/marks'
 import { ActionBarPlugin } from './lean-editor/plugins'
@@ -30,6 +31,7 @@ const schema = [
     nodes: [
       TextNode({
         marks: [BoldMark(), ItalicMark()],
+        inlines: [LinkInline()],
       }),
       TextNode({
         addCommand: 'addCode',

@@ -6,6 +6,7 @@ import { getFirstCurrentTargetBlock, getParentForBlock } from '../../_utils'
 /**
  * TODO: Allow passing in an array of specific command names to be displayed
  * TODO: Handle selection over multiple blocks
+ * TODO: Show add actions only when selection is collapsed - toggle actions only when expanded ?!?
  */
 
 const defaultConfig = {
@@ -69,6 +70,10 @@ function getIsActive(editor, plugin, schemaType) {
         editor.value.activeMarks.some(mark => mark.type === plugin.config.type)
       )
     case 'inline':
+      return (
+        editor &&
+        editor.value.inlines.some(inline => inline.type === plugin.config.type)
+      )
     case 'block': {
       const currentBlock = getFirstCurrentTargetBlock(editor)
       const parentBlock = getParentForBlock(editor, currentBlock)
@@ -105,7 +110,18 @@ function getIsVisible(editor, allPlugins, plugin, commandTypes) {
         allowedMarks.findIndex(mark => mark.type === plugin.config.type) >= 0
       )
     }
-    case 'inline':
+    case 'inline': {
+      const schema = getSchemaForBlock(allPlugins, currentBlock)
+      const allowedInlines =
+        (((schema || {}).blocks || {})[currentBlock && currentBlock.type] || {})
+          .inlines || []
+
+      return (
+        allowedInlines.findIndex(
+          inline => inline.type === plugin.config.type
+        ) >= 0
+      )
+    }
     case 'block': {
       const parentBlock = getParentForBlock(editor, currentBlock)
 

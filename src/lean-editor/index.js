@@ -75,14 +75,15 @@ function buildSchemaPlugins(schema) {
 }
 
 function extractNestedPlugins(plugin) {
-  const nodes = plugin.config.nodes || []
+  const inlines = plugin.config.inlines || []
   const marks = plugin.config.marks || []
+  const nodes = plugin.config.nodes || []
 
   const nestedPlugins = nodes.reduce((array, node) => {
     return [...array, ...extractNestedPlugins(node)]
   }, [])
 
-  return [...nodes, ...marks, ...nestedPlugins]
+  return [...inlines, ...marks, ...nodes, ...nestedPlugins]
 }
 
 function removeDuplicatedPlugins(allPlugins) {

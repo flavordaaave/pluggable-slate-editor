@@ -11,6 +11,7 @@ const defaultConfig = {
   allowSoftBreak: true,
   Component: ParagraphComponent,
   icon: TextIcon,
+  inlines: [],
   insertTypeOnEnter: undefined,
   marks: [],
   toggleCommand: undefined,
@@ -23,7 +24,14 @@ export const TextNode = (configOverrides = {}) => {
     ...defaultConfig,
     ...configOverrides,
   }
-  const { allowSoftBreak, Component, insertTypeOnEnter, marks, type } = config
+  const {
+    allowSoftBreak,
+    Component,
+    inlines,
+    insertTypeOnEnter,
+    marks,
+    type,
+  } = config
   return {
     commands: generateCommands(config),
     config,
@@ -62,11 +70,15 @@ export const TextNode = (configOverrides = {}) => {
     schema: {
       blocks: {
         [type]: {
-          nodes: [
-            {
-              match: { object: 'text' },
-            },
-          ],
+          // nodes: [
+          //   {
+          //     match:
+          //       inlines && inlines.lenght > 0
+          //         ? [{ object: 'text' }, { object: 'inline' }]
+          //         : { object: 'text' },
+          //   },
+          // ],
+          nodes: [{ match: [{ object: 'text' }, { object: 'inline' }] }],
           marks: marks.reduce((array, mark) => {
             const { config } = mark
             if (config.type) {
@@ -79,6 +91,25 @@ export const TextNode = (configOverrides = {}) => {
             }
             return array
           }, []),
+          inlines: inlines.reduce((array, inline) => {
+            const { config } = inline
+            if (config.type) {
+              return [
+                ...array,
+                {
+                  type: config.type,
+                },
+              ]
+            }
+            return array
+          }, []),
+          normalize(editor, error) {
+            const { code, index, node, child, rule } = error
+            console.log('TextNode: node', node)
+            console.log('TextNode: child', child)
+            console.log('TextNode: code', code)
+            console.log('TextNode: rule', rule)
+          },
         },
       },
     },
