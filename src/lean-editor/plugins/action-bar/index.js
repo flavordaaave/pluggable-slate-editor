@@ -3,6 +3,10 @@ import React from 'react'
 import { ActionBarComponent } from './component'
 import { getCurrentTargetBlock, getParentForBlock } from '../../_utils'
 
+/**
+ * TODO: Allow passing in an array of specific command names to be displayed
+ */
+
 const defaultConfig = {
   commandTypes: ['toggleCommand'],
   Component: ActionBarComponent,
