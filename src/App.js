@@ -4,6 +4,7 @@ import Container from '@material-ui/core/Container'
 import { makeStyles } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Divider from '@material-ui/core/Divider'
+import CodeIcon from '@material-ui/icons/Code'
 import { Value } from 'slate'
 
 import { Caption, Code, Headline, InfoBox } from './components'
@@ -30,10 +31,14 @@ const schema = [
         marks: [BoldMark(), ItalicMark()],
       }),
       TextNode({
+        addCommand: 'addCode',
         allowSoftBreak: false,
         Component: Code,
-        type: 'code',
         insertTypeOnEnter: 'paragraph',
+        toggleCommand: 'toggleCode',
+        toggleDefaultType: 'paragraph',
+        icon: CodeIcon,
+        type: 'code',
       }),
       ContainerNode({
         type: 'infoBox',
@@ -68,7 +73,14 @@ export const App = () => {
       <LeanEditor
         className={classes.editor}
         onChange={setEditorValue}
-        plugins={[ActionBarPlugin()]}
+        plugins={[
+          ActionBarPlugin({
+            commandTypes: ['addCommand'],
+          }),
+          ActionBarPlugin({
+            commandTypes: ['toggleCommand'],
+          }),
+        ]}
         schema={schema}
         value={editorValue}
       />

@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { ActionBarComponent } from './component'
-import { getCurrentTargetBlock } from '../../_utils'
+import { getCurrentTargetBlock, getParentForBlock } from '../../_utils'
 
 const defaultConfig = {
   commandTypes: ['toggleCommand'],
@@ -35,26 +35,14 @@ function generateButtons(editor, plugins, commandTypes) {
   return (
     plugins
       // Get those plugins that have one of the `commandTypes`
-      .filter(plugin => {
-        return (
-          commandTypes.findIndex(command =>
-            plugin.config.hasOwnProperty(command)
-          ) >= 0
-        )
-      })
+      .filter(plugin => findValidCommandType(commandTypes, plugin))
       // Create a button object for every plugin
       .map(plugin => ({
         isActive: getIsActive(editor, plugin),
         icon: plugin.config.icon,
-        isVisible: getIsVisible(editor, plugins, plugin),
+        isVisible: getIsVisible(editor, plugins, plugin, commandTypes),
         onClick:
-          editor[
-            plugin.config[
-              commandTypes.find(command =>
-                plugin.config.hasOwnProperty(command)
-              )
-            ]
-          ],
+          editor[plugin.config[findValidCommandType(commandTypes, plugin)]],
       }))
   )
 }
@@ -73,18 +61,26 @@ function getIsActive(editor, plugin, schemaType) {
         editor.value.activeMarks.some(mark => mark.type === plugin.config.type)
       )
     case 'inline':
-    case 'block':
+    case 'block': {
+      const currentBlock = getCurrentTargetBlock(editor)
+      return (
+        currentBlock &&
+        currentBlock.type &&
+        currentBlock.type === plugin.config.type
+      )
+    }
+
     default:
       return false
   }
 }
 
-function getIsVisible(editor, allPlugins, plugin) {
+function getIsVisible(editor, allPlugins, plugin, commandTypes) {
   const currentBlock = getCurrentTargetBlock(editor)
-  const schema = getSchemaForBlock(allPlugins, currentBlock)
 
   switch (getPluginType(plugin)) {
-    case 'mark':
+    case 'mark': {
+      const schema = getSchemaForBlock(allPlugins, currentBlock)
       const allowedMarks =
         (((schema || {}).blocks || {})[currentBlock && currentBlock.type] || {})
           .marks || []
@@ -92,8 +88,21 @@ function getIsVisible(editor, allPlugins, plugin) {
       return (
         allowedMarks.findIndex(mark => mark.type === plugin.config.type) >= 0
       )
+    }
     case 'inline':
-    case 'block':
+    case 'block': {
+      const parentBlock = getParentForBlock(editor, currentBlock)
+      if (!parentBlock) return false
+      const schema = getSchemaForBlock(allPlugins, parentBlock)
+
+      const allowedBlocks =
+        ((((schema || {}).blocks || {})[parentBlock && parentBlock.type] || {})
+          .nodes || [{}])[0].match || []
+      return (
+        allowedBlocks.findIndex(block => block.type === plugin.config.type) >= 0
+      )
+    }
+
     default:
       return false
   }
@@ -103,4 +112,12 @@ function getSchemaForBlock(plugins, block) {
   const found =
     plugins.find(plugin => plugin.config.type === (block && block.type)) || {}
   return found.schema || null
+}
+
+function findValidCommandType(commandTypes, plugin) {
+  return commandTypes.find(
+    command =>
+      plugin.config.hasOwnProperty(command) &&
+      plugin.config[command] !== undefined
+  )
 }
