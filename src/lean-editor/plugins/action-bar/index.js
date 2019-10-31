@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { ActionBarComponent } from './component'
-import { getCurrentTargetBlock, getParentForBlock } from '../../_utils'
+import { getFirstCurrentTargetBlock, getParentForBlock } from '../../_utils'
 
 /**
  * TODO: Allow passing in an array of specific command names to be displayed
@@ -69,7 +69,7 @@ function getIsActive(editor, plugin, schemaType) {
       )
     case 'inline':
     case 'block': {
-      const currentBlock = getCurrentTargetBlock(editor)
+      const currentBlock = getFirstCurrentTargetBlock(editor)
       return (
         currentBlock &&
         currentBlock.type &&
@@ -83,7 +83,7 @@ function getIsActive(editor, plugin, schemaType) {
 }
 
 function getIsVisible(editor, allPlugins, plugin, commandTypes) {
-  const currentBlock = getCurrentTargetBlock(editor)
+  const currentBlock = getFirstCurrentTargetBlock(editor)
 
   switch (getPluginType(plugin)) {
     case 'mark': {

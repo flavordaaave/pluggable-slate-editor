@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Divider from '@material-ui/core/Divider'
 import CodeIcon from '@material-ui/icons/Code'
+import InfoIcon from '@material-ui/icons/Info'
 import { Value } from 'slate'
 
 import { AddBar, Caption, Code, Headline, InfoBox } from './components'
@@ -41,6 +42,8 @@ const schema = [
         type: 'code',
       }),
       ContainerNode({
+        addCommand: 'addInfoBox',
+        icon: InfoIcon,
         type: 'infoBox',
         Component: InfoBox,
         nodes: [
@@ -49,6 +52,8 @@ const schema = [
             marks: [ItalicMark()],
           }),
         ],
+        toggleCommand: 'toggleInfoBox',
+        toggleNodesDefaultType: 'paragraph',
       }),
     ],
   }),

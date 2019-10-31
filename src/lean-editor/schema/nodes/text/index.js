@@ -3,8 +3,8 @@ import React from 'react'
 import TextIcon from '@material-ui/icons/TextFormat'
 import { Block } from 'slate'
 
+import { getFirstCurrentTargetBlock } from '../../../_utils'
 import { ParagraphComponent } from './component'
-import { getCurrentTargetBlock } from '../../../_utils'
 
 const defaultConfig = {
   addCommand: undefined,
@@ -28,7 +28,7 @@ export const TextNode = (configOverrides = {}) => {
     commands: generateCommands(config),
     config,
     onKeyDown(event, editor, next) {
-      const currentBlock = getCurrentTargetBlock(editor)
+      const currentBlock = getFirstCurrentTargetBlock(editor)
       if (event.key === 'Enter' && currentBlock.type === type) {
         if (event.shiftKey) {
           if (!allowSoftBreak) return
@@ -90,7 +90,7 @@ function generateCommands(config) {
 
   if (config.toggleCommand) {
     commands[config.toggleCommand] = editor => {
-      const currentBlock = getCurrentTargetBlock(editor)
+      const currentBlock = getFirstCurrentTargetBlock(editor)
       if (currentBlock.type === config.type) {
         // Toggle to default block
         return editor.setNodeByKey(currentBlock.key, config.toggleDefaultType)
@@ -104,7 +104,7 @@ function generateCommands(config) {
     commands[config.addCommand] = editor => {
       const { value } = editor
       const { document } = value
-      const currentBlock = getCurrentTargetBlock(editor)
+      const currentBlock = getFirstCurrentTargetBlock(editor)
       const parent = document.getParent(currentBlock.key)
       const index = parent.nodes.findIndex(
         node => node.key === currentBlock.key
