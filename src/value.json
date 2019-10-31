@@ -31,8 +31,21 @@
               },
               {
                 "object": "text",
-                "text": "with bold",
+                "text": "with bold ",
                 "marks": [{ "type": "bold" }]
+              },
+              {
+                "object": "inline",
+                "type": "link",
+                "data": {
+                  "href": "https://en.wikipedia.org/wiki/Hypertext"
+                },
+                "nodes": [
+                  {
+                    "object": "text",
+                    "text": "and link"
+                  }
+                ]
               },
               {
                 "object": "text",
