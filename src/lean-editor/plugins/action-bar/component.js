@@ -22,7 +22,7 @@ export const ActionBarComponent = ({ buttons }) => {
                   button.onClick()
                 }}
               >
-                <button.icon />
+                <button.Icon />
               </IconButton>
             )
         )}

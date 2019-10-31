@@ -7,7 +7,7 @@ import Divider from '@material-ui/core/Divider'
 import CodeIcon from '@material-ui/icons/Code'
 import { Value } from 'slate'
 
-import { Caption, Code, Headline, InfoBox } from './components'
+import { AddBar, Caption, Code, Headline, InfoBox } from './components'
 import { LeanEditor } from './lean-editor'
 import { ContainerNode, TextNode } from './lean-editor/schema/nodes'
 import { BoldMark, ItalicMark } from './lean-editor/schema/marks'
@@ -76,6 +76,7 @@ export const App = () => {
         plugins={[
           ActionBarPlugin({
             commandTypes: ['addCommand'],
+            Component: AddBar,
           }),
           ActionBarPlugin({
             commandTypes: ['toggleCommand'],

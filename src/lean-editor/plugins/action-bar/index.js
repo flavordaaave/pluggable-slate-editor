@@ -5,6 +5,7 @@ import { getCurrentTargetBlock, getParentForBlock } from '../../_utils'
 
 const defaultConfig = {
   commandTypes: ['toggleCommand'],
+  Component: ActionBarComponent,
 }
 
 export const ActionBarPlugin = (configOverrides = {}) => {
@@ -12,7 +13,7 @@ export const ActionBarPlugin = (configOverrides = {}) => {
     ...defaultConfig,
     ...configOverrides,
   }
-  const { commandTypes } = config
+  const { commandTypes, Component } = config
 
   return {
     config,
@@ -23,7 +24,7 @@ export const ActionBarPlugin = (configOverrides = {}) => {
       const children = next()
       return (
         <React.Fragment>
-          <ActionBarComponent buttons={buttons} />
+          <Component buttons={buttons} />
           {children}
         </React.Fragment>
       )
@@ -38,9 +39,11 @@ function generateButtons(editor, plugins, commandTypes) {
       .filter(plugin => findValidCommandType(commandTypes, plugin))
       // Create a button object for every plugin
       .map(plugin => ({
+        Icon: plugin.config.icon,
         isActive: getIsActive(editor, plugin),
-        icon: plugin.config.icon,
         isVisible: getIsVisible(editor, plugins, plugin, commandTypes),
+        key: plugin.config[findValidCommandType(commandTypes, plugin)],
+        label: plugin.config[findValidCommandType(commandTypes, plugin)],
         onClick:
           editor[plugin.config[findValidCommandType(commandTypes, plugin)]],
       }))
