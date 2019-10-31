@@ -1,13 +1,13 @@
 import React from 'react'
 import { findRange } from 'slate-react'
 
-import { NavBarComponent } from './component'
+import { ActionBarComponent } from './component'
 
 const defaultConfig = {
   commandTypes: ['toggleCommand'],
 }
 
-export const TogglebarPlugin = (configOverrides = {}) => {
+export const ActionBarPlugin = (configOverrides = {}) => {
   const config = {
     ...defaultConfig,
     ...configOverrides,
@@ -23,7 +23,7 @@ export const TogglebarPlugin = (configOverrides = {}) => {
       const children = next()
       return (
         <React.Fragment>
-          <NavBarComponent buttons={buttons} />
+          <ActionBarComponent buttons={buttons} />
           {children}
         </React.Fragment>
       )

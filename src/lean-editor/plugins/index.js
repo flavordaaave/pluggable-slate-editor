@@ -1,1 +1,1 @@
-export { TogglebarPlugin } from './toggle-bar'
+export { ActionBarPlugin } from './action-bar'

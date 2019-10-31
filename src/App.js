@@ -7,7 +7,7 @@ import { Caption, Code, Headline, InfoBox } from './components'
 import { LeanEditor } from './lean-editor'
 import { ContainerNode, TextNode } from './lean-editor/schema/nodes'
 import { BoldMark, ItalicMark } from './lean-editor/schema/marks'
-import { TogglebarPlugin } from './lean-editor/plugins'
+import { ActionBarPlugin } from './lean-editor/plugins'
 import initialValue from './value'
 
 // NOTE: The order matters!
@@ -57,7 +57,7 @@ export const App = () => {
       <LeanEditor
         className={classes.editor}
         onChange={setEditorValue}
-        plugins={[TogglebarPlugin()]}
+        plugins={[ActionBarPlugin()]}
         schema={schema}
         value={editorValue}
       />
