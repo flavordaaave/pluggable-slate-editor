@@ -3,11 +3,17 @@
     "nodes": [
       {
         "object": "block",
-        "type": "headline",
+        "type": "header",
         "nodes": [
           {
-            "object": "text",
-            "text": "Welcome! This is the headline."
+            "object": "block",
+            "type": "headlineTop",
+            "nodes": [
+              {
+                "object": "text",
+                "text": "Welcome! This is the headline."
+              }
+            ]
           }
         ]
       },
@@ -73,7 +79,7 @@
       },
       {
         "object": "block",
-        "type": "headline",
+        "type": "headlineBottom",
         "nodes": [
           {
             "object": "text",

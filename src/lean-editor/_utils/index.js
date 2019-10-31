@@ -1,0 +1,1 @@
+export { getCurrentTargetBlock } from './getCurrentTargetBlock'

@@ -12,6 +12,6 @@ export const ParagraphComponent = props => {
 
 const useStyles = makeStyles(theme => ({
   typography: {
-    margin: theme.spacing(1, 0),
+    margin: theme.spacing(2, 0),
   },
 }))

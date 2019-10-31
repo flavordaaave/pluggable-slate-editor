@@ -1,7 +1,7 @@
 import React from 'react'
-import { findRange } from 'slate-react'
 
 import { ActionBarComponent } from './component'
+import { getCurrentTargetBlock } from '../../_utils'
 
 const defaultConfig = {
   commandTypes: ['toggleCommand'],
@@ -103,11 +103,4 @@ function getSchemaForBlock(plugins, block) {
   const found =
     plugins.find(plugin => plugin.config.type === (block && block.type)) || {}
   return found.schema || null
-}
-
-function getCurrentTargetBlock(editor) {
-  const { document } = editor.value
-  const nativeSelection = window.getSelection()
-  const range = findRange(nativeSelection, editor)
-  return range && document.getLeafBlocksAtRange(range).first()
 }

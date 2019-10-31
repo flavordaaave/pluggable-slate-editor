@@ -15,10 +15,14 @@ import initialValue from './value'
 
 // NOTE: The order matters!
 const schema = [
-  TextNode({
-    Component: Headline,
-    type: 'headline',
-    marks: [ItalicMark()],
+  ContainerNode({
+    type: 'header',
+    nodes: [
+      TextNode({
+        Component: Headline,
+        type: 'headlineTop',
+      }),
+    ],
   }),
   ContainerNode({
     nodes: [
@@ -26,8 +30,10 @@ const schema = [
         marks: [BoldMark(), ItalicMark()],
       }),
       TextNode({
+        allowSoftBreak: false,
         Component: Code,
         type: 'code',
+        insertTypeOnEnter: 'paragraph',
       }),
       ContainerNode({
         type: 'infoBox',
@@ -43,7 +49,8 @@ const schema = [
   }),
   TextNode({
     Component: Headline,
-    type: 'headline',
+    type: 'headlineBottom',
+    marks: [ItalicMark()],
   }),
   TextNode({
     type: 'outside',
