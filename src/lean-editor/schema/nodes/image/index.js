@@ -10,6 +10,7 @@ const defaultConfig = {
   addCommand: undefined,
   Component: ImageComponent,
   icon: ImageIcon,
+  onAddDataResolver: () => {},
   toggleCommand: undefined,
   toggleNodesDefaultType: 'paragraph',
   type: 'image',
@@ -20,7 +21,7 @@ export const ImageNode = (configOverrides = {}) => {
     ...defaultConfig,
     ...configOverrides,
   }
-  const { addCommand, Component, type } = config
+  const { Component, type } = config
   return {
     commands: generateCommands(config),
     config,
@@ -49,7 +50,7 @@ function generateCommands(config) {
   const commands = {}
 
   if (config.addCommand) {
-    commands[config.addCommand] = editor => {
+    commands[config.addCommand] = async editor => {
       const { value } = editor
       const { document } = value
       const currentBlock = getFirstCurrentTargetBlock(editor)
@@ -58,7 +59,7 @@ function generateCommands(config) {
         node => node.key === currentBlock.key
       )
 
-      const src = window.prompt('Enter the Image URL:')
+      const { src } = await config.onAddDataResolver()
 
       if (src == null) {
         return

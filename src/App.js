@@ -40,6 +40,13 @@ const schema = [
         ],
         inlines: [
           LinkInline({
+            onAddDataResolver: () =>
+              new Promise(res => {
+                const href = window.prompt('Link URL eingeben:')
+                res({
+                  href,
+                })
+              }),
             toggleCommand: 'toggleLink',
           }),
         ],
@@ -54,9 +61,13 @@ const schema = [
       }),
       ImageNode({
         addCommand: 'addImage',
-        onAddDataResolver: async () => ({
-          src: 'https://en.wikipedia.org/wiki/Hypertext',
-        }),
+        onAddDataResolver: () =>
+          new Promise(res => {
+            const src = window.prompt('Bild URL eingeben:')
+            res({
+              src,
+            })
+          }),
       }),
       ContainerNode({
         addCommand: 'addInfoBox',

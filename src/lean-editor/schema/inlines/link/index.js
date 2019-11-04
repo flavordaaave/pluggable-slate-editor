@@ -3,6 +3,7 @@ import LinkIcon from '@material-ui/icons/Link'
 
 const defaultConfig = {
   icon: LinkIcon,
+  onAddDataResolver: () => {},
   type: 'link',
   toggleCommand: undefined,
 }
@@ -38,13 +39,13 @@ function generateCommands(config) {
   const commands = {}
 
   if (config.toggleCommand) {
-    commands[config.toggleCommand] = editor => {
+    commands[config.toggleCommand] = async editor => {
       const { value } = editor
       const hasLinks = value.inlines.some(inline => inline.type === config.type)
       if (hasLinks) {
         editor.unwrapInline(config.type)
       } else if (value.selection.isExpanded) {
-        const href = window.prompt('Enter the URL of the link:')
+        const { href } = await config.onAddDataResolver()
 
         if (href == null) {
           return
