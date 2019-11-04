@@ -30,8 +30,19 @@ const schema = [
   ContainerNode({
     nodes: [
       TextNode({
-        marks: [BoldMark(), ItalicMark()],
-        inlines: [LinkInline()],
+        marks: [
+          BoldMark({
+            toggleCommand: 'toggleBold',
+          }),
+          ItalicMark({
+            toggleCommand: 'toggleItalic',
+          }),
+        ],
+        inlines: [
+          LinkInline({
+            toggleCommand: 'toggleLink',
+          }),
+        ],
       }),
       TextNode({
         addCommand: 'addCode',
@@ -41,7 +52,12 @@ const schema = [
         icon: CodeIcon,
         type: 'code',
       }),
-      ImageNode(),
+      ImageNode({
+        addCommand: 'addImage',
+        onAddDataResolver: async () => ({
+          src: 'https://en.wikipedia.org/wiki/Hypertext',
+        }),
+      }),
       ContainerNode({
         addCommand: 'addInfoBox',
         icon: InfoIcon,
@@ -50,7 +66,11 @@ const schema = [
         nodes: [
           TextNode({
             type: 'infoBoxParagraph',
-            marks: [ItalicMark()],
+            marks: [
+              ItalicMark({
+                toggleCommand: 'toggleItalic',
+              }),
+            ],
           }),
         ],
         toggleCommand: 'toggleInfoBox',
@@ -61,7 +81,11 @@ const schema = [
     allowSoftBreak: false,
     Component: Headline,
     type: 'headlineBottom',
-    marks: [ItalicMark()],
+    marks: [
+      ItalicMark({
+        toggleCommand: 'toggleItalic',
+      }),
+    ],
   }),
   TextNode({
     type: 'outside',

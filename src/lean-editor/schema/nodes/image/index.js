@@ -7,7 +7,7 @@ import { getFirstCurrentTargetBlock } from '../../../_utils'
 import { ImageComponent } from './component'
 
 const defaultConfig = {
-  addCommand: 'addImage',
+  addCommand: undefined,
   Component: ImageComponent,
   icon: ImageIcon,
   toggleCommand: undefined,
@@ -22,34 +22,7 @@ export const ImageNode = (configOverrides = {}) => {
   }
   const { addCommand, Component, type } = config
   return {
-    commands: {
-      [addCommand]: editor => {
-        const { value } = editor
-        const { document } = value
-        const currentBlock = getFirstCurrentTargetBlock(editor)
-        const parent = document.getParent(currentBlock.key)
-        const index = parent.nodes.findIndex(
-          node => node.key === currentBlock.key
-        )
-
-        const src = window.prompt('Enter the Image URL:')
-
-        if (src == null) {
-          return
-        }
-
-        const block = Block.create({
-          type: type,
-          data: {
-            src,
-          },
-        })
-
-        return editor
-          .insertNodeByKey(parent.key, index + 1, block)
-          .moveToStartOfNextText()
-      },
-    },
+    commands: generateCommands(config),
     config,
     renderBlock: (props, editor, next) => {
       switch (props.node.type) {
@@ -70,4 +43,39 @@ export const ImageNode = (configOverrides = {}) => {
       },
     },
   }
+}
+
+function generateCommands(config) {
+  const commands = {}
+
+  if (config.addCommand) {
+    commands[config.addCommand] = editor => {
+      const { value } = editor
+      const { document } = value
+      const currentBlock = getFirstCurrentTargetBlock(editor)
+      const parent = document.getParent(currentBlock.key)
+      const index = parent.nodes.findIndex(
+        node => node.key === currentBlock.key
+      )
+
+      const src = window.prompt('Enter the Image URL:')
+
+      if (src == null) {
+        return
+      }
+
+      const block = Block.create({
+        type: config.type,
+        data: {
+          src,
+        },
+      })
+
+      return editor
+        .insertNodeByKey(parent.key, index + 1, block)
+        .moveToStartOfNextText()
+    }
+  }
+
+  return commands
 }
