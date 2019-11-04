@@ -1,5 +1,5 @@
 {
-  "name": "slate-poc",
+  "name": "pluggable-slate-editor",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
