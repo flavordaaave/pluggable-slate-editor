@@ -11,7 +11,7 @@ import { Value } from 'slate'
 import { AddBar, Caption, Code, Headline, InfoBox } from './components'
 import { LeanEditor } from './lean-editor'
 import { LinkInline } from './lean-editor/schema/inlines'
-import { ContainerNode, TextNode } from './lean-editor/schema/nodes'
+import { ContainerNode, ImageNode, TextNode } from './lean-editor/schema/nodes'
 import { BoldMark, ItalicMark } from './lean-editor/schema/marks'
 import { ActionBarPlugin } from './lean-editor/plugins'
 import initialValue from './value'
@@ -41,6 +41,7 @@ const schema = [
         icon: CodeIcon,
         type: 'code',
       }),
+      ImageNode(),
       ContainerNode({
         addCommand: 'addInfoBox',
         icon: InfoIcon,
@@ -106,6 +107,7 @@ const useStyles = makeStyles(theme => ({
     },
   },
   editor: {
+    marginTop: 48, // Same as top navBar
     padding: theme.spacing(2),
   },
 }))

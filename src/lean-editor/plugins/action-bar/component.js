@@ -15,7 +15,7 @@ export const ActionBarComponent = ({ buttons }) => {
           button =>
             button.isVisible && (
               <IconButton
-                color={button.isActive ? 'primary' : 'default'}
+                color={button.isActive ? 'primary' : 'inherit'}
                 onClick={e => {
                   e.preventDefault()
                   e.stopPropagation()
@@ -34,9 +34,15 @@ export const ActionBarComponent = ({ buttons }) => {
 
 const useStyles = makeStyles({
   buttonGroup: {
+    backgroundColor: '#6f6f6f',
+    color: '#ffffff',
     display: 'block',
     height: '48px !important',
+    left: 0,
+    position: 'fixed',
     textAlign: 'center',
+    top: 0,
     width: '100%',
+    zIndex: 999999,
   },
 })

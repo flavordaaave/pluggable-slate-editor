@@ -87,6 +87,13 @@
                 "text": "A line of text in a code block."
               }
             ]
+          },
+          {
+            "object": "block",
+            "type": "image",
+            "data": {
+              "src": "https://www.zdf.de/assets/schweinsteiger-122~384x216?cb=1570546470248"
+            }
           }
         ]
       },
