@@ -16,4 +16,5 @@ yarn start
 - [x] Dynamically load plugins based on a config
 - [x] Allow configuring plugin relations a.k.a plugins within other plugins (e.g. `bold` within `infoBox`)
 - [x] Dynamically build Navigation elements: `Mark` vs. `Inline` vs. `Block` & `toggle` vs `add`
+- [ ] Add `min`/`max` config option for nodes within the `ContainerNode`
 - [ ] Add default `normalizer` methods to all plugins (e.g. add empty block if missing according to schema)
