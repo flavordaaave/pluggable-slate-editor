@@ -56,7 +56,10 @@ export const ImageNode = (configOverrides = {}) => {
         case type:
           const { data } = props.node
           const src = data.get('src')
-          return <Component {...props.attributes} src={src} />
+          const onDelete = () => editor.removeNodeByKey(props.node.key)
+          return (
+            <Component {...props.attributes} onDelete={onDelete} src={src} />
+          )
         default:
           return next()
       }
