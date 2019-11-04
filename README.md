@@ -1,3 +1,5 @@
+[Demo](https://slate-poc.flavordaaave.now.sh)
+
 ## Setup & run
 
 ```
