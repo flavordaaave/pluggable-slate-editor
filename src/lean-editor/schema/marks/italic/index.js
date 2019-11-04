@@ -4,7 +4,7 @@ import ItalicIcon from '@material-ui/icons/FormatItalic'
 const defaultConfig = {
   icon: ItalicIcon,
   type: 'italic',
-  toggleCommand: 'toggleItalic',
+  toggleCommand: undefined,
 }
 
 export const ItalicMark = (configOverrides = {}) => {
@@ -12,15 +12,11 @@ export const ItalicMark = (configOverrides = {}) => {
     ...defaultConfig,
     ...configOverrides,
   }
-  const { type, toggleCommand } = config
+  const { type } = config
 
   return {
     config,
-    commands: {
-      [toggleCommand]: editor => {
-        editor.toggleMark(type)
-      },
-    },
+    commands: generateCommands(config),
     renderMark(props, editor, next) {
       switch (props.mark.type) {
         case type:
@@ -30,4 +26,16 @@ export const ItalicMark = (configOverrides = {}) => {
       }
     },
   }
+}
+
+function generateCommands(config) {
+  const commands = {}
+
+  if (config.toggleCommand) {
+    commands[config.toggleCommand] = editor => {
+      editor.toggleMark(config.type)
+    }
+  }
+
+  return commands
 }
