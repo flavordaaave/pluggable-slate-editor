@@ -51,7 +51,17 @@ export const ContainerNode = (configOverrides = {}) => {
                 },
               ]) ||
             [],
-          normalize: defaultNormalize,
+          normalize: (editor, error) => {
+            const { code, child } = error
+            if (code === 'child_type_invalid' && nodes.length > 0) {
+              // Replace the invalid child with an empty block of the first node from the config
+              return editor.replaceNodeByKey(
+                child.key,
+                Block.create(nodes[0].config.type)
+              )
+            }
+            defaultNormalize(editor, error)
+          },
         },
       },
     },

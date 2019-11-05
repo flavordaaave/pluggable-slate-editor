@@ -17,7 +17,7 @@ export function defaultNormalize(editor, error) {
     previous,
     rule,
   } = error
-
+  console.log('code', code)
   switch (code) {
     case 'child_max_invalid':
     case 'child_object_invalid':
@@ -52,7 +52,41 @@ export function defaultNormalize(editor, error) {
         : editor.removeNodeByKey(next.key)
     }
 
-    case 'child_min_invalid':
+    case 'child_min_invalid': {
+      // The index does NOT help us find the missing child here since it does not handle the case where
+      // other nodes appeare more than once (e.g. 2x `headline`).
+      // So we go through the nodes as they are defined in rule/schema and compare them to the nodes from the error
+      // In order to get the missing node type
+      const expectedNodes = rule.nodes.map(node => node.match.type)
+      const receivedNodes = node.toJSON().nodes.map(node => node.type)
+      const missingNodeIndex = expectedNodes.findIndex(
+        node => !receivedNodes.includes(node)
+      )
+      const missingType = expectedNodes[missingNodeIndex]
+      if (missingType) {
+        // Than we need to get the index where we need to insert the missing type
+        let indexToAddNode = missingNodeIndex
+        if (missingNodeIndex === 0) {
+          const typeBeforeMissing =
+            missingNodeIndex > 0
+              ? expectedNodes[missingNodeIndex - 1]
+              : expectedNodes[0]
+          const indexToAddMissingAfter = receivedNodes.lastIndexOf(
+            typeBeforeMissing
+          )
+          indexToAddNode = indexToAddMissingAfter + 1
+        }
+        return editor.insertNodeByKey(
+          node.key,
+          indexToAddNode,
+          Block.create({
+            type: missingType,
+            nodes: [],
+          })
+        )
+      }
+    }
+
     case 'node_text_invalid':
     case 'parent_object_invalid':
     case 'parent_type_invalid': {
