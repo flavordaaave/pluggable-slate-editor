@@ -17,7 +17,6 @@ export function defaultNormalize(editor, error) {
     previous,
     rule,
   } = error
-  console.log('code', code)
   switch (code) {
     case 'child_max_invalid':
     case 'child_object_invalid':
