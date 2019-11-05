@@ -3,6 +3,22 @@
     "nodes": [
       {
         "object": "block",
+        "type": "header",
+        "nodes": [
+          {
+            "object": "block",
+            "type": "headlineTop",
+            "nodes": [
+              {
+                "object": "text",
+                "text": "Welcome to the editor"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "object": "block",
         "type": "body",
         "nodes": [
           {
