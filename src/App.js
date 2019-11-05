@@ -24,6 +24,7 @@ const schema = [
       TextNode({
         Component: Headline,
         type: 'headlineTop',
+        placeholder: 'Überschrift',
       }),
     ],
   }),
@@ -102,6 +103,7 @@ const schema = [
   TextNode({
     type: 'outside',
     Component: Caption,
+    placeholder: 'Caption',
   }),
 ]
 
@@ -123,9 +125,7 @@ export const App = () => {
           ActionBarPlugin({
             commandTypes: ['toggleCommand'],
           }),
-          PlaceholderPlugin({
-            defaultPlaceholder: 'Hier tippen...',
-          }),
+          PlaceholderPlugin(),
         ]}
         schema={schema}
         value={editorValue}
