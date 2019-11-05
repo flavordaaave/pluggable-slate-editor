@@ -1,6 +1,8 @@
 import React from 'react'
 import { Editor } from 'slate-react'
 
+import { defaultNormalize } from './schema/defaultNormalize'
+
 let documentSchema = null
 let generatedPlugins = null
 
@@ -52,14 +54,7 @@ function buildDocumentSchema(schema) {
   const constructedSchema = {
     document: {
       nodes: documentNodes,
-      normalize(editor, error) {
-        const { code, index, node, child, rule } = error
-        console.log('Document: child', child)
-        console.log('Document: code', code)
-        console.log('Document: rule', rule)
-        console.log('Document: node', node)
-        console.log('Document: index', index)
-      },
+      normalize: defaultNormalize,
     },
     blocks: {},
     // NOTE: We won't add `marks`, `inline` & `rules` here

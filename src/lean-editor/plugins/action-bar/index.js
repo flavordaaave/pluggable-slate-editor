@@ -149,13 +149,16 @@ function getIsVisible(editor, allPlugins, plugin, commandTypes) {
 
 function getSchemaForBlock(plugins, block) {
   const found =
-    plugins.find(plugin => plugin.config.type === (block && block.type)) || {}
+    plugins.find(
+      plugin => plugin.config && plugin.config.type === (block && block.type)
+    ) || {}
   return found.schema || null
 }
 
 function findValidCommandType(commandTypes, plugin) {
   return commandTypes.find(
     command =>
+      plugin.config &&
       plugin.config.hasOwnProperty(command) &&
       plugin.config[command] !== undefined
   )

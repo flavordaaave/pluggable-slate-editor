@@ -13,7 +13,6 @@ export const Caption = props => {
 const useStyles = makeStyles(theme => ({
   typography: {
     margin: theme.spacing(1, 0),
-    textAlign: 'right',
     display: 'block',
   },
 }))

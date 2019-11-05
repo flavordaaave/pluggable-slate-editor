@@ -4,6 +4,7 @@ import ImageIcon from '@material-ui/icons/Image'
 import { Block } from 'slate'
 
 import { getFirstCurrentTargetBlock } from '../../../_utils'
+import { defaultNormalize } from '../../defaultNormalize'
 import { ImageComponent } from './component'
 
 const defaultConfig = {
@@ -41,6 +42,7 @@ export const ImageNode = (configOverrides = {}) => {
     schema: {
       blocks: {
         [type]: {},
+        normalize: defaultNormalize,
       },
     },
   }

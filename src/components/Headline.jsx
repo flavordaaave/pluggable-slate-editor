@@ -11,6 +11,5 @@ export const Headline = props => {
 const useStyles = makeStyles(theme => ({
   typography: {
     margin: theme.spacing(2, 0),
-    textAlign: 'center',
   },
 }))

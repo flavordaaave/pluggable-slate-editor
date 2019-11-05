@@ -4,6 +4,7 @@ import TextIcon from '@material-ui/icons/TextFormat'
 import { Block } from 'slate'
 
 import { getFirstCurrentTargetBlock } from '../../../_utils'
+import { defaultNormalize } from '../../defaultNormalize'
 import { ParagraphComponent } from './component'
 
 const defaultConfig = {
@@ -14,6 +15,7 @@ const defaultConfig = {
   inlines: [],
   insertTypeOnEnter: undefined,
   marks: [],
+  placeholder: '',
   toggleCommand: undefined,
   toggleDefaultType: 'paragraph',
   type: 'paragraph',
@@ -30,6 +32,7 @@ export const TextNode = (configOverrides = {}) => {
     inlines,
     insertTypeOnEnter,
     marks,
+    placeholder,
     type,
   } = config
   return {
@@ -70,15 +73,8 @@ export const TextNode = (configOverrides = {}) => {
     schema: {
       blocks: {
         [type]: {
-          // nodes: [
-          //   {
-          //     match:
-          //       inlines && inlines.lenght > 0
-          //         ? [{ object: 'text' }, { object: 'inline' }]
-          //         : { object: 'text' },
-          //   },
-          // ],
           nodes: [{ match: [{ object: 'text' }, { object: 'inline' }] }],
+          placeholder,
           marks: marks.reduce((array, mark) => {
             const { config } = mark
             if (config.type) {
@@ -103,13 +99,7 @@ export const TextNode = (configOverrides = {}) => {
             }
             return array
           }, []),
-          normalize(editor, error) {
-            const { code, index, node, child, rule } = error
-            console.log('TextNode: node', node)
-            console.log('TextNode: child', child)
-            console.log('TextNode: code', code)
-            console.log('TextNode: rule', rule)
-          },
+          normalize: defaultNormalize,
         },
       },
     },

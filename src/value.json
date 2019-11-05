@@ -3,22 +3,6 @@
     "nodes": [
       {
         "object": "block",
-        "type": "header",
-        "nodes": [
-          {
-            "object": "block",
-            "type": "headlineTop",
-            "nodes": [
-              {
-                "object": "text",
-                "text": "Welcome! This is the headline."
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "object": "block",
         "type": "body",
         "nodes": [
           {

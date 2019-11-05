@@ -13,7 +13,7 @@ import { LeanEditor } from './lean-editor'
 import { LinkInline } from './lean-editor/schema/inlines'
 import { ContainerNode, ImageNode, TextNode } from './lean-editor/schema/nodes'
 import { BoldMark, ItalicMark } from './lean-editor/schema/marks'
-import { ActionBarPlugin } from './lean-editor/plugins'
+import { ActionBarPlugin, PlaceholderPlugin } from './lean-editor/plugins'
 import initialValue from './value'
 
 // NOTE: The order matters!
@@ -97,6 +97,7 @@ const schema = [
         toggleCommand: 'toggleItalic',
       }),
     ],
+    placeholder: 'Bottom headline',
   }),
   TextNode({
     type: 'outside',
@@ -121,6 +122,9 @@ export const App = () => {
           }),
           ActionBarPlugin({
             commandTypes: ['toggleCommand'],
+          }),
+          PlaceholderPlugin({
+            defaultPlaceholder: 'Hier tippen...',
           }),
         ]}
         schema={schema}

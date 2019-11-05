@@ -8,6 +8,7 @@ import {
   getFirstCurrentTargetBlock,
   getParentForBlock,
 } from '../../../_utils'
+import { defaultNormalize } from '../../defaultNormalize'
 import { ContainerComponent } from './component'
 
 const defaultConfig = {
@@ -50,13 +51,7 @@ export const ContainerNode = (configOverrides = {}) => {
                 },
               ]) ||
             [],
-          normalize(editor, error) {
-            const { code, index, node, child, rule } = error
-            console.log('ContainerNode: node', node)
-            console.log('ContainerNode: child', child)
-            console.log('ContainerNode: code', code)
-            console.log('ContainerNode: rule', rule)
-          },
+          normalize: defaultNormalize,
         },
       },
     },

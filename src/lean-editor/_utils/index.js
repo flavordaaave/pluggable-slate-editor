@@ -1,4 +1,6 @@
 export { getAllCurrentTargetBlocks } from './getAllCurrentTargetBlocks'
 export { getFirstCurrentTargetBlock } from './getFirstCurrentTargetBlock'
 export { getParentForBlock } from './getParentForBlock'
+export { getPlaceholderFromSchema } from './getPlaceholderFromSchema'
+export { getPluginForNode } from './getPluginForNode'
 export { isTextBlock } from './isTextBlock'
