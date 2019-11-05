@@ -13,7 +13,6 @@ const defaultConfig = {
   Component: ParagraphComponent,
   icon: TextIcon,
   inlines: [],
-  insertTypeOnEnter: undefined,
   marks: [],
   placeholder: '',
   toggleCommand: undefined,
@@ -30,7 +29,6 @@ export const TextNode = (configOverrides = {}) => {
     allowSoftBreak,
     Component,
     inlines,
-    insertTypeOnEnter,
     marks,
     placeholder,
     type,
@@ -41,24 +39,14 @@ export const TextNode = (configOverrides = {}) => {
     onKeyDown(event, editor, next) {
       const currentBlock = getFirstCurrentTargetBlock(editor)
       if (event.key === 'Enter' && currentBlock.type === type) {
+        // TODO: ONLY add a new block if selection is at the END of the text
+
         if (event.shiftKey) {
           if (!allowSoftBreak) return
           // Insert soft-linebreak
           return editor.insertText('\n')
         }
-        // Insert a new block
-        // As of default we insert a new block of the same type
-        // but if configured we insert the block type as defined in the config
-        const { value } = editor
-        const { document } = value
-        const parent = document.getParent(currentBlock.key)
-        const index = parent.nodes.findIndex(
-          node => node.key === currentBlock.key
-        )
-        const block = Block.create(insertTypeOnEnter || type)
-        return editor
-          .insertNodeByKey(parent.key, index + 1, block)
-          .moveToStartOfNextText()
+        return editor.splitBlock()
       }
       next()
     },

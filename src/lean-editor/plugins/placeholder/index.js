@@ -11,13 +11,13 @@ export function PlaceholderPlugin(options = {}) {
     // Only decorade `block` nodes that have an empty text AND a placeholder prop in their schema
     if (node.object !== 'block' || node.text !== '') return next()
 
-    // Do NOT add a placeholder if there is a previous/next block of the same type with text in it
+    // Do NOT add a placeholder if there is a previous block of the same type or a next block of the same type that has text
     const { value } = editor
     const { document } = value
     const previousNode = document.getPreviousSibling(node.key)
     const nextNode = document.getNextSibling(node.key)
     if (
-      (previousNode && previousNode.type === node.type && previousNode.text) ||
+      (previousNode && previousNode.type === node.type && previousNode) ||
       (nextNode && nextNode.type === node.type && nextNode.text)
     )
       return next()
@@ -48,7 +48,6 @@ export function PlaceholderPlugin(options = {}) {
 
   function renderDecoration(props, editor, next) {
     const { children, decoration: deco, isFocused } = props
-    console.log('props', props)
 
     if (isFocused) return next()
 

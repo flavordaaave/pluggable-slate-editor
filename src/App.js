@@ -55,7 +55,6 @@ const schema = [
       TextNode({
         addCommand: 'addCode',
         Component: Code,
-        insertTypeOnEnter: 'paragraph',
         toggleCommand: 'toggleCode',
         icon: CodeIcon,
         type: 'code',
