@@ -20,6 +20,8 @@ import initialValue from './value'
 const schema = [
   ContainerNode({
     type: 'header',
+    minNodes: 1,
+    maxNodes: 2,
     nodes: [
       TextNode({
         Component: Headline,

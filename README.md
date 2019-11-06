@@ -17,5 +17,7 @@ yarn start
 - [x] Allow configuring plugin relations a.k.a plugins within other plugins (e.g. `bold` within `infoBox`)
 - [x] Dynamically build Navigation elements: `Mark` vs. `Inline` vs. `Block` & `toggle` vs `add`
 - [x] Render placeholders if required
-- [ ] Allow `min`/`max` config option for nodes within the `ContainerNode`
-- [ ] Use default `normalizer` in all plugins (e.g. add empty block if missing according to schema)
+- [x] Allow `min`/`max` config option for nodes within the `ContainerNode`
+- [ ] Allow `min/max` for root(document) nodes
+- [x] Use default `normalizer` in all plugins (e.g. add empty block if missing according to schema)
+- [ ] Test for plugins & normalizer

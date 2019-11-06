@@ -56,36 +56,51 @@ export function defaultNormalize(editor, error) {
       // other nodes appeare more than once (e.g. 2x `headline`).
       // So we go through the nodes as they are defined in rule/schema and compare them to the nodes from the error
       // In order to get the missing node type
-      const expectedNodes = rule.nodes.map(node => node.match.type)
-      const receivedNodes = node.toJSON().nodes.map(node => node.type)
-      const missingNodeIndex = expectedNodes.findIndex(
-        node => !receivedNodes.includes(node)
-      )
-      const missingType = expectedNodes[missingNodeIndex]
-      if (missingType) {
-        // Than we need to get the index where we need to insert the missing type
-        let indexToAddNode = missingNodeIndex
-        if (missingNodeIndex === 0) {
-          const typeBeforeMissing =
-            missingNodeIndex > 0
-              ? expectedNodes[missingNodeIndex - 1]
-              : expectedNodes[0]
-          const indexToAddMissingAfter = receivedNodes.lastIndexOf(
-            typeBeforeMissing
-          )
-          indexToAddNode = indexToAddMissingAfter + 1
+      let expectedNodes, missingType, indexToAddMissingNode
+
+      // In a container node we have a single node with multiple matches => Order is irrelevant
+      if (rule.match[0].object !== 'document') {
+        expectedNodes =
+          rule.nodes[0] &&
+          rule.nodes[0].match &&
+          rule.nodes[0].match.map(match => match.type)
+
+        if (count > 0) {
+          // We are missing an already existing node and need to add some
+          // since within a container the min/max is NOT configured on a specific not
+          // and instead indicates just how many nodes in general a container should have
+          // we just add the first valid child node with the missing amount
+          missingType = expectedNodes[0]
+          indexToAddMissingNode = count
         }
+      } else {
+        // On root level ('document') we have a single match.type for each node => Order is important
+        expectedNodes = rule.nodes.map(node => node.match.type)
+        const receivedNodes = node.toJSON().nodes.map(node => node.type)
+        const missingNodeIndex = expectedNodes.findIndex(
+          node => !receivedNodes.includes(node)
+        )
+        missingType = expectedNodes[missingNodeIndex]
+        indexToAddMissingNode = missingNodeIndex
+        if (missingNodeIndex === 0) {
+          indexToAddMissingNode = 0
+        }
+      }
+
+      // Add the node if we have everything we need
+      if (missingType && typeof indexToAddMissingNode === 'number') {
         return editor.insertNodeByKey(
           node.key,
-          indexToAddNode,
+          indexToAddMissingNode,
           Block.create({
             type: missingType,
             nodes: [],
           })
         )
       }
-    }
 
+      break
+    }
     case 'node_text_invalid':
     case 'parent_object_invalid':
     case 'parent_type_invalid': {

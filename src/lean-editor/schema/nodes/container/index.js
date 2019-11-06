@@ -15,6 +15,8 @@ const defaultConfig = {
   addCommand: undefined,
   Component: ContainerComponent,
   icon: BlockIcon,
+  maxNodes: undefined,
+  minNodes: undefined,
   nodes: [],
   toggleCommand: undefined,
   toggleNodesDefaultType: 'paragraph',
@@ -26,7 +28,7 @@ export const ContainerNode = (configOverrides = {}) => {
     ...defaultConfig,
     ...configOverrides,
   }
-  const { Component, nodes, type } = config
+  const { Component, maxNodes, minNodes, nodes, type } = config
   return {
     commands: generateCommands(config, nodes),
     config,
@@ -48,6 +50,8 @@ export const ContainerNode = (configOverrides = {}) => {
                   match: nodes.map(node => ({
                     type: node.config.type,
                   })),
+                  ...(typeof maxNodes === 'number' ? { max: maxNodes } : {}),
+                  ...(typeof minNodes === 'number' ? { min: minNodes } : {}),
                 },
               ]) ||
             [],
