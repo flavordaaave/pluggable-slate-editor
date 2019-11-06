@@ -59,6 +59,7 @@ const schema = [
         }),
         TextNode({
           addCommand: 'addCode',
+          allowBackspaceDeleteBlock: true,
           allowSoftBreak: false,
           Component: Code,
           toggleCommand: 'toggleCode',
@@ -82,6 +83,7 @@ const schema = [
           Component: InfoBox,
           nodes: [
             TextNode({
+              allowBackspaceDeleteBlock: true,
               type: 'infoBoxParagraph',
               marks: [
                 ItalicMark({

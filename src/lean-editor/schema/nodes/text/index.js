@@ -11,6 +11,7 @@ import { defaultNormalize } from '../../defaultNormalize'
 import { ParagraphComponent } from './component'
 
 const defaultConfig = {
+  allowBackspaceDeleteBlock: false,
   addCommand: undefined,
   allowSoftBreak: true,
   Component: ParagraphComponent,
@@ -28,13 +29,21 @@ export const TextNode = (configOverrides = {}) => {
     ...defaultConfig,
     ...configOverrides,
   }
-  const { allowSoftBreak, Component, inlines, marks, type } = config
+  const {
+    allowBackspaceDeleteBlock,
+    allowSoftBreak,
+    Component,
+    inlines,
+    marks,
+    type,
+  } = config
   return {
     commands: generateCommands(config),
     config,
     ...limitSelectionToType(type),
     onKeyDown(event, editor, next) {
       const currentBlock = getFirstCurrentTargetBlock(editor)
+      // Add handler for soft-linebreaks
       if (event.key === 'Enter' && currentBlock.type === type) {
         if (event.shiftKey) {
           if (!allowSoftBreak) return
@@ -43,6 +52,23 @@ export const TextNode = (configOverrides = {}) => {
         }
         return editor.splitBlock()
       }
+
+      // Prevent deletion of block when cursor is at the beginning of the block and backspace is pressed
+      if (event.key === 'Backspace' && currentBlock.type === type) {
+        const {
+          value: { document, selection },
+        } = editor
+        const previousBlock = document.getPreviousBlock(currentBlock.key)
+        if (
+          selection.anchor.offset === 0 &&
+          selection.focus.offset === 0 &&
+          !allowBackspaceDeleteBlock &&
+          previousBlock.type !== currentBlock.type
+        ) {
+          return
+        }
+      }
+
       next()
     },
     renderBlock: (props, editor, next) => {
