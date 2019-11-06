@@ -59,6 +59,7 @@ const schema = [
         }),
         TextNode({
           addCommand: 'addCode',
+          allowSoftBreak: false,
           Component: Code,
           toggleCommand: 'toggleCode',
           icon: CodeIcon,
