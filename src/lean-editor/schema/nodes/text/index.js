@@ -3,7 +3,10 @@ import React from 'react'
 import TextIcon from '@material-ui/icons/TextFormat'
 import { Block } from 'slate'
 
-import { getFirstCurrentTargetBlock } from '../../../_utils'
+import {
+  appearsNodeAfterOther,
+  getFirstCurrentTargetBlock,
+} from '../../../_utils'
 import { defaultNormalize } from '../../defaultNormalize'
 import { ParagraphComponent } from './component'
 
@@ -138,16 +141,18 @@ function limitSelectionToType(type) {
         if (anchorNode.type !== focusNode.type) {
           // Assuming the blocks in SlateJS have ascending keys
           // we can decide wether the selection was made forward or backwards
-          if (focusKey > anchorKey) {
+          if (appearsNodeAfterOther(editor, focusNode, anchorNode)) {
             // Selection was made forward
-            return editor.moveFocusToEndOfNode(
-              document.getPreviousBlock(focusNode.key)
-            )
+            const edgeBlock = document.getPreviousBlock(focusNode.key)
+            return editor.withoutNormalizing(c => {
+              c.moveFocusToEndOfNode(edgeBlock)
+            })
           } else {
             // Selection was made backwards
-            return editor.moveFocusToStartOfNode(
-              document.getNextBlock(focusNode.key)
-            )
+            const edgeBlock = document.getNextBlock(focusNode.key)
+            return editor.withoutNormalizing(c => {
+              return c.moveFocusToStartOfNode(edgeBlock)
+            })
           }
         }
       }
