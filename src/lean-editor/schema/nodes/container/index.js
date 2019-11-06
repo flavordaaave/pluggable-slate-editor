@@ -18,6 +18,7 @@ const defaultConfig = {
   maxNodes: undefined,
   minNodes: undefined,
   nodes: [],
+  preventBackspaceDeletion: false,
   toggleCommand: undefined,
   toggleNodesDefaultType: 'paragraph',
   type: 'body',
@@ -28,10 +29,30 @@ export const ContainerNode = (configOverrides = {}) => {
     ...defaultConfig,
     ...configOverrides,
   }
-  const { Component, nodes, type } = config
+  const { Component, nodes, preventBackspaceDeletion, type } = config
   return {
     commands: generateCommands(config),
     config,
+    onKeyDown(event, editor, next) {
+      const currentBlock = getFirstCurrentTargetBlock(editor)
+      // Prevent deletion of block when cursor is at the beginning of the block and backspace is pressed
+      if (event.key === 'Backspace') {
+        const {
+          value: { document, selection },
+        } = editor
+        const previousNode = document.getPreviousNode(currentBlock.key)
+        if (
+          previousNode.type === type &&
+          selection.anchor.offset === 0 &&
+          selection.focus.offset === 0 &&
+          preventBackspaceDeletion
+        ) {
+          return
+        }
+      }
+
+      next()
+    },
     renderBlock: (props, editor, next) => {
       switch (props.node.type) {
         case type:

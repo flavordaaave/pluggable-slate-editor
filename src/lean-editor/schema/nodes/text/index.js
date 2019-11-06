@@ -11,7 +11,6 @@ import { defaultNormalize } from '../../defaultNormalize'
 import { ParagraphComponent } from './component'
 
 const defaultConfig = {
-  allowBackspaceDeleteBlock: false,
   addCommand: undefined,
   allowSoftBreak: true,
   Component: ParagraphComponent,
@@ -19,6 +18,7 @@ const defaultConfig = {
   inlines: [],
   marks: [],
   placeholder: '',
+  preventBackspaceDeletion: false,
   toggleCommand: undefined,
   toggleDefaultType: 'paragraph',
   type: 'paragraph',
@@ -30,11 +30,11 @@ export const TextNode = (configOverrides = {}) => {
     ...configOverrides,
   }
   const {
-    allowBackspaceDeleteBlock,
     allowSoftBreak,
     Component,
     inlines,
     marks,
+    preventBackspaceDeletion,
     type,
   } = config
   return {
@@ -54,16 +54,16 @@ export const TextNode = (configOverrides = {}) => {
       }
 
       // Prevent deletion of block when cursor is at the beginning of the block and backspace is pressed
-      if (event.key === 'Backspace' && currentBlock.type === type) {
+      if (event.key === 'Backspace') {
         const {
           value: { document, selection },
         } = editor
-        const previousBlock = document.getPreviousBlock(currentBlock.key)
+        const previousNode = document.getPreviousNode(currentBlock.key)
         if (
+          previousNode.type === type &&
           selection.anchor.offset === 0 &&
           selection.focus.offset === 0 &&
-          !allowBackspaceDeleteBlock &&
-          previousBlock.type !== currentBlock.type
+          preventBackspaceDeletion
         ) {
           return
         }

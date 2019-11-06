@@ -30,6 +30,7 @@ const schema = [
           placeholder: 'Überschrift',
         }),
       ],
+      preventBackspaceDeletion: true,
     }),
   },
   {
@@ -59,7 +60,6 @@ const schema = [
         }),
         TextNode({
           addCommand: 'addCode',
-          allowBackspaceDeleteBlock: true,
           allowSoftBreak: false,
           Component: Code,
           toggleCommand: 'toggleCode',
@@ -83,7 +83,6 @@ const schema = [
           Component: InfoBox,
           nodes: [
             TextNode({
-              allowBackspaceDeleteBlock: true,
               type: 'infoBoxParagraph',
               marks: [
                 ItalicMark({
@@ -95,6 +94,7 @@ const schema = [
           toggleCommand: 'toggleInfoBox',
         }),
       ],
+      preventBackspaceDeletion: true,
     }),
   },
   {
@@ -108,6 +108,7 @@ const schema = [
         }),
       ],
       placeholder: 'Bottom headline',
+      preventBackspaceDeletion: true,
     }),
     min: 1,
     max: 2,
