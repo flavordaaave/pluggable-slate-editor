@@ -19,6 +19,5 @@ yarn start
 - [x] Render placeholders if required
 - [x] Allow `min`/`max` config option for the amount of nodes within a `ContainerNode`
 - [x] Allow `min/max` for root(document) nodes
-- [ ] Allow `min/max` for a specific type within a `ContainerNode`
 - [x] Use default `normalizer` in all plugins (e.g. add empty block if missing according to schema)
 - [ ] Test for plugins & normalizer
