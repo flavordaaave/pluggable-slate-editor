@@ -18,8 +18,6 @@ const defaultConfig = {
   maxNodes: undefined,
   minNodes: undefined,
   nodes: [],
-  selfMinInRoot: undefined,
-  selfMaxInRoot: undefined,
   toggleCommand: undefined,
   toggleNodesDefaultType: 'paragraph',
   type: 'body',

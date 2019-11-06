@@ -38,17 +38,16 @@ export const LeanEditor = ({ className, onChange, plugins, schema, value }) => {
 function buildDocumentSchema(schema) {
   const documentNodes = []
 
-  for (let node of schema) {
-    const { selfMaxInRoot, selfMinInRoot, type } = node.config
+  for (let entry of schema) {
+    const { max, min, node } = entry
+    const { type } = node.config
     if (type) {
       // We add a seperate object with a single `match.type` object
       // so the user explicitly defines the exact order and accurance of each node in the root document
       documentNodes.push({
         match: { type },
-        // TODO: The `selfMaxInRoot` and `selfMinInRoot` props should not be set on the plugin level
-        // But only on the rootDocument
-        max: typeof selfMaxInRoot === 'number' ? selfMaxInRoot : 1,
-        min: typeof selfMinInRoot === 'number' ? selfMinInRoot : 1,
+        max: typeof max === 'number' ? max : 1,
+        min: typeof min === 'number' ? min : 1,
       })
     }
   }
@@ -66,7 +65,8 @@ function buildDocumentSchema(schema) {
 }
 
 function buildSchemaPlugins(schema) {
-  return schema.reduce((plugins, node) => {
+  return schema.reduce((plugins, schemaEntry) => {
+    const { node } = schemaEntry
     return [...plugins, node, ...extractNestedPlugins(node)]
   }, [])
 }

@@ -15,8 +15,6 @@ const defaultConfig = {
   inlines: [],
   marks: [],
   placeholder: '',
-  selfMinInRoot: undefined,
-  selfMaxInRoot: undefined,
   toggleCommand: undefined,
   toggleDefaultType: 'paragraph',
   type: 'paragraph',

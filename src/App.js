@@ -18,96 +18,104 @@ import initialValue from './value'
 
 // NOTE: The order matters!
 const schema = [
-  ContainerNode({
-    type: 'header',
-    minNodes: 1,
-    maxNodes: 2,
-    nodes: [
-      TextNode({
-        Component: Headline,
-        type: 'headlineTop',
-        placeholder: 'Überschrift',
-      }),
-    ],
-  }),
-  ContainerNode({
-    nodes: [
-      TextNode({
-        marks: [
-          BoldMark({
-            toggleCommand: 'toggleBold',
-          }),
-          ItalicMark({
-            toggleCommand: 'toggleItalic',
-          }),
-        ],
-        inlines: [
-          LinkInline({
-            onAddDataResolver: () =>
-              new Promise(res => {
-                const href = window.prompt('Link URL eingeben:')
-                res({
-                  href,
-                })
-              }),
-            toggleCommand: 'toggleLink',
-          }),
-        ],
-      }),
-      TextNode({
-        addCommand: 'addCode',
-        Component: Code,
-        toggleCommand: 'toggleCode',
-        icon: CodeIcon,
-        type: 'code',
-      }),
-      ImageNode({
-        addCommand: 'addImage',
-        onAddDataResolver: () =>
-          new Promise(res => {
-            const src = window.prompt('Bild URL eingeben:')
-            res({
-              src,
-            })
-          }),
-      }),
-      ContainerNode({
-        addCommand: 'addInfoBox',
-        icon: InfoIcon,
-        type: 'infoBox',
-        Component: InfoBox,
-        nodes: [
-          TextNode({
-            type: 'infoBoxParagraph',
-            marks: [
-              ItalicMark({
-                toggleCommand: 'toggleItalic',
-              }),
-            ],
-          }),
-        ],
-        toggleCommand: 'toggleInfoBox',
-      }),
-    ],
-  }),
-  TextNode({
-    allowSoftBreak: false,
-    Component: Headline,
-    type: 'headlineBottom',
-    marks: [
-      ItalicMark({
-        toggleCommand: 'toggleItalic',
-      }),
-    ],
-    placeholder: 'Bottom headline',
-    selfMinInRoot: 1,
-    selfMaxInRoot: 2,
-  }),
-  TextNode({
-    type: 'outside',
-    Component: Caption,
-    placeholder: 'Caption',
-  }),
+  {
+    node: ContainerNode({
+      type: 'header',
+      minNodes: 1,
+      maxNodes: 2,
+      nodes: [
+        TextNode({
+          Component: Headline,
+          type: 'headlineTop',
+          placeholder: 'Überschrift',
+        }),
+      ],
+    }),
+  },
+  {
+    node: ContainerNode({
+      nodes: [
+        TextNode({
+          marks: [
+            BoldMark({
+              toggleCommand: 'toggleBold',
+            }),
+            ItalicMark({
+              toggleCommand: 'toggleItalic',
+            }),
+          ],
+          inlines: [
+            LinkInline({
+              onAddDataResolver: () =>
+                new Promise(res => {
+                  const href = window.prompt('Link URL eingeben:')
+                  res({
+                    href,
+                  })
+                }),
+              toggleCommand: 'toggleLink',
+            }),
+          ],
+        }),
+        TextNode({
+          addCommand: 'addCode',
+          Component: Code,
+          toggleCommand: 'toggleCode',
+          icon: CodeIcon,
+          type: 'code',
+        }),
+        ImageNode({
+          addCommand: 'addImage',
+          onAddDataResolver: () =>
+            new Promise(res => {
+              const src = window.prompt('Bild URL eingeben:')
+              res({
+                src,
+              })
+            }),
+        }),
+        ContainerNode({
+          addCommand: 'addInfoBox',
+          icon: InfoIcon,
+          type: 'infoBox',
+          Component: InfoBox,
+          nodes: [
+            TextNode({
+              type: 'infoBoxParagraph',
+              marks: [
+                ItalicMark({
+                  toggleCommand: 'toggleItalic',
+                }),
+              ],
+            }),
+          ],
+          toggleCommand: 'toggleInfoBox',
+        }),
+      ],
+    }),
+  },
+  {
+    node: TextNode({
+      allowSoftBreak: false,
+      Component: Headline,
+      type: 'headlineBottom',
+      marks: [
+        ItalicMark({
+          toggleCommand: 'toggleItalic',
+        }),
+      ],
+      placeholder: 'Bottom headline',
+    }),
+    min: 1,
+    max: 2,
+  },
+  {
+    node: TextNode({
+      type: 'outside',
+      Component: Caption,
+      placeholder: 'Caption',
+    }),
+  },
 ]
 
 export const App = () => {
