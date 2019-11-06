@@ -32,7 +32,7 @@ export const ContainerNode = (configOverrides = {}) => {
   }
   const { Component, maxNodes, minNodes, nodes, type } = config
   return {
-    commands: generateCommands(config, nodes),
+    commands: generateCommands(config),
     config,
     renderBlock: (props, editor, next) => {
       switch (props.node.type) {
@@ -45,18 +45,7 @@ export const ContainerNode = (configOverrides = {}) => {
     schema: {
       blocks: {
         [type]: {
-          nodes:
-            (nodes &&
-              nodes.length > 0 && [
-                {
-                  match: nodes.map(node => ({
-                    type: node.config.type,
-                  })),
-                  ...(typeof maxNodes === 'number' ? { max: maxNodes } : {}),
-                  ...(typeof minNodes === 'number' ? { min: minNodes } : {}),
-                },
-              ]) ||
-            [],
+          nodes: generateNodes(config),
           normalize: (editor, error) => {
             const { code, child } = error
             if (code === 'child_type_invalid' && nodes.length > 0) {
@@ -74,7 +63,8 @@ export const ContainerNode = (configOverrides = {}) => {
   }
 }
 
-function generateCommands(config, nodes) {
+function generateCommands(config) {
+  const { nodes } = config
   const commands = {}
 
   if (config.toggleCommand) {
@@ -126,4 +116,18 @@ function generateCommands(config, nodes) {
   }
 
   return commands
+}
+
+function generateNodes(config) {
+  const { maxNodes, minNodes, nodes } = config
+  if (!Array.isArray(nodes)) return []
+  return [
+    {
+      match: nodes.map(node => ({
+        type: node.config.type,
+      })),
+      ...(typeof maxNodes === 'number' ? { max: maxNodes } : {}),
+      ...(typeof minNodes === 'number' ? { min: minNodes } : {}),
+    },
+  ]
 }
