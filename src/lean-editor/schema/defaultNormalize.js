@@ -64,18 +64,18 @@ export function defaultNormalize(editor, error) {
           rule.nodes[0] &&
           rule.nodes[0].match &&
           rule.nodes[0].match.map(match => match.type)
-
-        if (count > 0) {
-          // We are missing an already existing node and need to add some
-          // since within a container the min/max is NOT configured on a specific not
-          // and instead indicates just how many nodes in general a container should have
-          // we just add the first valid child node with the missing amount
-          missingType = expectedNodes[0]
-          indexToAddMissingNode = count
-        }
       } else {
         // On root level ('document') we have a single match.type for each node => Order is important
         expectedNodes = rule.nodes.map(node => node.match.type)
+      }
+      if (count > 0) {
+        // We are missing an already existing node and need to add some
+        // since within a container the min/max is NOT configured on a specific not
+        // and instead indicates just how many nodes in general a container should have
+        // we just add the first valid child node with the missing amount
+        missingType = expectedNodes[0]
+        indexToAddMissingNode = count
+      } else {
         const receivedNodes = node.toJSON().nodes.map(node => node.type)
         const missingNodeIndex = expectedNodes.findIndex(
           node => !receivedNodes.includes(node)
@@ -86,6 +86,10 @@ export function defaultNormalize(editor, error) {
           indexToAddMissingNode = 0
         }
       }
+
+      console.log('expectedNodes', expectedNodes)
+      console.log('missingType', missingType)
+      console.log('indexToAddMissingNode', indexToAddMissingNode)
 
       // Add the node if we have everything we need
       if (missingType && typeof indexToAddMissingNode === 'number') {

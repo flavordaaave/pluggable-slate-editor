@@ -12,6 +12,8 @@ const defaultConfig = {
   Component: ImageComponent,
   icon: ImageIcon,
   onAddDataResolver: () => {},
+  selfMin: undefined,
+  selfMax: undefined,
   toggleCommand: undefined,
   toggleNodesDefaultType: 'paragraph',
   type: 'image',

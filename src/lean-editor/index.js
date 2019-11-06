@@ -39,14 +39,14 @@ function buildDocumentSchema(schema) {
   const documentNodes = []
 
   for (let node of schema) {
-    const { type } = node.config
+    const { selfMax, selfMin, type } = node.config
     if (type) {
       // We add a seperate object with a single `match.type` object
       // so the user explicitly defines the exact order and accurance of each node in the root document
       documentNodes.push({
         match: { type },
-        max: 1, // Prevents multiple occurences in a row
-        min: 1,
+        max: typeof selfMax === 'number' ? selfMax : 1, // Prevents multiple occurences in a row
+        min: typeof selfMin === 'number' ? selfMin : 1,
       })
     }
   }

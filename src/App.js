@@ -100,6 +100,8 @@ const schema = [
       }),
     ],
     placeholder: 'Bottom headline',
+    selfMin: 1,
+    selfMax: 2,
   }),
   TextNode({
     type: 'outside',
