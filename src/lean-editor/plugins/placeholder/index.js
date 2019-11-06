@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { getPlaceholderFromSchema } from '../../_utils'
+import { getPlaceholderFromPlugin } from '../../_utils'
 
 // Taken from https://github.com/ianstormtaylor/slate/tree/master/packages/slate-react-placeholder
 // and enhanced to use placeholder string from schema
@@ -24,7 +24,7 @@ export function PlaceholderPlugin(options = {}) {
 
     // Get the placeholder value
     const placeholderValue =
-      getPlaceholderFromSchema(editor, node) || defaultPlaceholder
+      getPlaceholderFromPlugin(editor, node) || defaultPlaceholder
     if (!placeholderValue) return next()
 
     const others = next()

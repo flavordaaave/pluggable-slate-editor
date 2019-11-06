@@ -25,14 +25,7 @@ export const TextNode = (configOverrides = {}) => {
     ...defaultConfig,
     ...configOverrides,
   }
-  const {
-    allowSoftBreak,
-    Component,
-    inlines,
-    marks,
-    placeholder,
-    type,
-  } = config
+  const { allowSoftBreak, Component, inlines, marks, type } = config
   return {
     commands: generateCommands(config),
     config,
@@ -62,7 +55,6 @@ export const TextNode = (configOverrides = {}) => {
       blocks: {
         [type]: {
           nodes: [{ match: [{ object: 'text' }, { object: 'inline' }] }],
-          placeholder,
           marks: marks.reduce((array, mark) => {
             const { config } = mark
             if (config.type) {
