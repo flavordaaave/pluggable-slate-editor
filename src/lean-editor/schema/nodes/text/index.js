@@ -29,6 +29,7 @@ export const TextNode = (configOverrides = {}) => {
   return {
     commands: generateCommands(config),
     config,
+    ...limitSelectionToBlock(type),
     onKeyDown(event, editor, next) {
       const currentBlock = getFirstCurrentTargetBlock(editor)
       if (event.key === 'Enter' && currentBlock.type === type) {
@@ -118,4 +119,29 @@ function generateCommands(config) {
   }
 
   return commands
+}
+
+/**
+ * Prevents that a TRIPLE mouse click sets a selection accorss different block types
+ */
+function limitSelectionToBlock(type) {
+  return {
+    onSelect(_, editor, next) {
+      const {
+        value: { document, selection },
+      } = editor
+      const anchorKey = selection.anchor.key
+      const anchorNode = anchorKey && document.getClosestBlock(anchorKey)
+      // If the selection starts within this block...
+      if (anchorNode && anchorNode.type === type) {
+        const focusKey = selection.focus.key
+        // ...and the selection goes beyond this block...
+        if (anchorKey !== focusKey) {
+          // ... we trim the selection to end at the end of this block
+          return editor.moveFocusToEndOfNode(anchorNode)
+        }
+      }
+      next()
+    },
+  }
 }
