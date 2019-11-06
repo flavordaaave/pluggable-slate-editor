@@ -20,11 +20,11 @@ yarn start
 - [x] Allow `min`/`max` config option for the amount of nodes within a `ContainerNode`
 - [x] Allow `min/max` for root(document) nodes
 - [x] Use default `normalizer` in all plugins (e.g. add empty block if missing according to schema)
+- [ ] Add configProp to `ContainerNode` that ensures a default node type is always inserted between blocks
 - [ ] Test for plugins & normalizer
 
 ## Known issues
 
-- Pressing `Backspace` key whil cursor is at the beginning of the first paragrap, moves paragraph into headline
 - Toggle commands are shown even though NO text is selected (selection is collapsed)
 - If the selection is expanded over multiple blocks (e.g. `paragraph` AND `infoBox`) the toolbar shows valid commands for the FIRST node in the selection instead of only the commands that are valid accross ALL selected nodes
 - If selection is expanded over text that (partially) already includes marks AND any mark is toggled, the selection moves to an unexpected position
