@@ -29,12 +29,10 @@ export const TextNode = (configOverrides = {}) => {
   return {
     commands: generateCommands(config),
     config,
-    ...limitSelectionToBlock(type),
+    ...limitSelectionToType(type),
     onKeyDown(event, editor, next) {
       const currentBlock = getFirstCurrentTargetBlock(editor)
       if (event.key === 'Enter' && currentBlock.type === type) {
-        // TODO: ONLY add a new block if selection is at the END of the text
-
         if (event.shiftKey) {
           if (!allowSoftBreak) return
           // Insert soft-linebreak
@@ -122,9 +120,9 @@ function generateCommands(config) {
 }
 
 /**
- * Prevents that a TRIPLE mouse click sets a selection accorss different block types
+ * Prevents that a TRIPLE mouse click sets a selection accorss different block types.
  */
-function limitSelectionToBlock(type) {
+function limitSelectionToType(type) {
   return {
     onSelect(_, editor, next) {
       const {
@@ -132,13 +130,25 @@ function limitSelectionToBlock(type) {
       } = editor
       const anchorKey = selection.anchor.key
       const anchorNode = anchorKey && document.getClosestBlock(anchorKey)
-      // If the selection starts within this block...
+      // If the selection starts within this type...
       if (anchorNode && anchorNode.type === type) {
         const focusKey = selection.focus.key
-        // ...and the selection goes beyond this block...
-        if (anchorKey !== focusKey) {
-          // ... we trim the selection to end at the end of this block
-          return editor.moveFocusToEndOfNode(anchorNode)
+        const focusNode = focusKey && document.getClosestBlock(focusKey)
+        // ...and the selection goes into a block of another type
+        if (anchorNode.type !== focusNode.type) {
+          // Assuming the blocks in SlateJS have ascending keys
+          // we can decide wether the selection was made forward or backwards
+          if (focusKey > anchorKey) {
+            // Selection was made forward
+            return editor.moveFocusToEndOfNode(
+              document.getPreviousBlock(focusNode.key)
+            )
+          } else {
+            // Selection was made backwards
+            return editor.moveFocusToStartOfNode(
+              document.getNextBlock(focusNode.key)
+            )
+          }
         }
       }
       next()
