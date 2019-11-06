@@ -4,19 +4,7 @@ import { Block } from 'slate'
 // and enhanced with some additional rules
 
 export function defaultNormalize(editor, error) {
-  const {
-    child,
-    code,
-    count,
-    index,
-    key,
-    limit,
-    mark,
-    next,
-    node,
-    previous,
-    rule,
-  } = error
+  const { child, code, count, key, mark, next, node, previous, rule } = error
   switch (code) {
     case 'child_max_invalid':
     case 'child_object_invalid':
