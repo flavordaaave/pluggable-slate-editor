@@ -30,7 +30,7 @@ export const ContainerNode = (configOverrides = {}) => {
     ...defaultConfig,
     ...configOverrides,
   }
-  const { Component, maxNodes, minNodes, nodes, type } = config
+  const { Component, nodes, type } = config
   return {
     commands: generateCommands(config),
     config,
